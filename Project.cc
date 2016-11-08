@@ -1,23 +1,14 @@
-#include stuff;
-
+//#include stuff;
 using namespace std;
 
 void int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
-	char edgesOrientation[] = [0,0,0,0,0,0,0,0,0,0,0,0];
-	char edgePosition[] = [0,0,0,0,0,0,0,0,0,0,0,0];
-
 	char edge[12][2];
 	//corner orientation goes 0,1,2
-	char cornerOrientation[] = [0,0,0,0,0,0,0,0];
-	char cornerPosition[] = [0,0,0,0,0,0,0,0];
-
 	char corner[8][2];
-	//using multidimensional array 6 columns(faces) 8 rows(corners/edges)?
-	//char mArray[6][8];
-	
-	//corner[0][0] is the position of first corner
+	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
+	//the correct value for the fifth corner would be corner[4][0] == 4 and corner[4][1] == 0
 
 }
 /*
@@ -29,7 +20,6 @@ face 0 would be corner index 2,3,6,7
 		[6][0][7]
 		[6][10][7]
 
-
 	faces:
 	0:white
 	1:blue
@@ -38,8 +28,6 @@ face 0 would be corner index 2,3,6,7
 	4:red
 	5:yellow
 */
-
-
 
 void twistClockwise(char* corners, char* edges,int face) {
 	if(face == 0){
@@ -54,8 +42,6 @@ void twistClockwise(char* corners, char* edges,int face) {
 		edge[9][0] = edge[6][0];
 		edge[6][0] = temp;
 	}
-
-
 
 /*
 	-----pseudo stuff-----
