@@ -22,8 +22,18 @@ void twistClockwise(int face) {
 		{3,7,8,2},
 		{9,10,6,8}
 	};
-
-	}
+	//twist corrosponding edges clockwise
+	char temp = edgeMoves[face][0];
+	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][1]];
+	edge[0][edgeMoves[face][1]] = edge[0][edgeMoves[face][2]];
+	edge[0][edgeMoves[face][2]] = edge[0][edgeMoves[face][3]];
+	edge[0][edgeMoves[face][3]] = temp;
+	//twist corrosponding corners clockwise
+	temp = cornerMoves[face][0];
+	corner[0][cornerMoves[face][0]] = corner[0][cornerMoves[face][1]];
+	corner[0][cornerMoves[face][1]] = corner[0][cornerMoves[face][2]];
+	corner[0][cornerMoves[face][2]] = corner[0][cornerMoves[face][3]];
+	corner[0][cornerMoves[face][3]] = temp;
 }
 
 void colorOfCorners(char corners[2][8]){
