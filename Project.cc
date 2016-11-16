@@ -3,21 +3,28 @@
 
 using namespace std;
 
-/*
-void twistClockwise(char* corners, char* edges,int face) {
-	if(face == 0){
-		char temp = corners[1][0];
-		corner[1][0] = corner[5][0];
-		corner[5][0] = corner[6][0];
-		corner[6][0] = corner[2][0];
-		corner[2][0] = temp;
-		temp = edge[1][0];
-		edge[1][0] = edge[5][0];
-		edge[5][0] = edge[9][0];
-		edge[9][0] = edge[6][0];
-		edge[6][0] = temp;
+
+void twistClockwise(int face) {
+	//arrays by moves, clockwise
+	char edgeMoves[6][4] = {
+		{0,1,2,3},
+		{0,2,11,5},
+		{2,1,6,5},
+		{3,2,5,4},
+		{0,3,4,7},
+		{4,5,6,7}
+	};
+	char cornerMoves[6][4] = {
+		{0,1,2,3},
+		{1,0,7,6},
+		{1,5,10,6},
+		{2,6,9,7},
+		{3,7,8,2},
+		{9,10,6,8}
+	};
+
 	}
-*/
+}
 
 void colorOfCorners(char corners[2][8]){
 	for(int i = 0; i < 8;i++){
@@ -94,108 +101,20 @@ void colorOfEdges(char edges[2][12]){
 	}
 
 }
-/*
-	corners:
-	0: white, green, orange
-	1: white, blue, orange
-	2: white, red, blue
-	3: white, red, green
-	4: yellow, green, orange
-	5: yellow, blue, orange
-	6: yellow, red, blue
-	7: yellow, red, green
 
-	edges:
-	0: white, orange
-	1: white, blue
-	2: white, red
-	3: white, green
-	4: green, orange
-	5: orange, blue
-	6: blue, red
-	7: red, green
-	8: yellow, orange
-	9: yellow, blue
-	10: yellow, red
-	11: yellow, green
-
-*/
-
-/*
-	-----pseudo stuff-----
-	if face = 0 //top face
-	temp = corner 2
-	corner 2 = corner 6
-	corner 6 = corner 7
-	corner 7 = corner 3
-	corner 3 = temp
-	temp     = edge 2
-	edge 2   = edge 6
-	edge 6   = edge 10
-	edge 10  = edge 7
-	edge 7   = temp
-
-	edge/corner orientation unaffected
-	edges move
-
-	if face = 2 or 4
-	edges flip orientation
-*/
 	
 int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
 	char edge[2][12];
-	char solvedEdges[2][12] = {
-		{'0','1','2','3','4','5','6','7','8','9','10','11'},
-		{'0','0','0','0','0','0','0','0','0','0','0','0'}
-	};
 	//corner orientation goes 0,1,2
 	char corner[2][8];
-	char solvedCorners[2][8] = {
-		{'0','1','2','3','4','5','6','7'},
-		{'0','0','0','0','0','0','0','0'}
-	};
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[4][0] == 4 and corner[4][1] == 0
-
-	//arrays by orientation moves, clockwise
-	char edgeMoves[6][4] = {
-		{0,0,0,0},
-		{0,0,0,0},
-		{1,-1,1,-1},
-		{0,0,0,0},
-		{1,-1,1,-1},
-		{0,0,0,0}
-	};
-
-	char cornerMoves[6][4] = {
-		{0,0,0,0},
-		{1,-1,1,-1},
-		{1,-1,1,-1},
-		{1,-1,1,-1},
-		{1,-1,1,-1},
-		{0,0,0,0}
-	};
-
-
-
-
-
-	colorOfCorners(solvedCorners);
-	colorOfEdges(solvedEdges);
 }
 
 
 /*
-indexes start at top back left and go clockwise
-face 0 would be corner index 2,3,6,7
-	edge index 2,6,7,10
-	it would look like the following:
-		[2][2][3]
-		[6][0][7]
-		[6][10][7]
-
 	faces:
 	0:white
 	1:blue
