@@ -3,33 +3,48 @@
 
 using namespace std;
 
+//arrays by moves, clockwise
+char edgeMoves[6][4] = {
+	{0,1,2,3},
+	{0,2,11,5},
+	{2,1,6,5},
+	{3,2,5,4},
+	{0,3,4,7},
+	{4,5,6,7}
+};
+char cornerMoves[6][4] = {
+	{0,1,2,3},
+	{1,0,7,6},
+	{1,5,10,6},
+	{2,6,9,7},
+	{3,7,8,2},
+	{9,10,6,8}
+};
 
 void twistClockwise(int face) {
-	//arrays by moves, clockwise
-	char edgeMoves[6][4] = {
-		{0,1,2,3},
-		{0,2,11,5},
-		{2,1,6,5},
-		{3,2,5,4},
-		{0,3,4,7},
-		{4,5,6,7}
-	};
-	char cornerMoves[6][4] = {
-		{0,1,2,3},
-		{1,0,7,6},
-		{1,5,10,6},
-		{2,6,9,7},
-		{3,7,8,2},
-		{9,10,6,8}
-	};
 	//twist corrosponding edges clockwise
-	char temp = edgeMoves[face][0];
+	char temp = edge[0][edgeMoves[face][0]];
+	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][3]];
+	edge[0][edgeMoves[face][3]] = edge[0][edgeMoves[face][2]];
+	edge[0][edgeMoves[face][2]] = edge[0][edgeMoves[face][1]];
+	edge[0][edgeMoves[face][1]] = temp;
+	//twist corrosponding corners clockwise
+	temp = corner[0][cornerMoves[face][0]];
+	corner[0][cornerMoves[face][0]] = corner[0][cornerMoves[face][3]];
+	corner[0][cornerMoves[face][3]] = corner[0][cornerMoves[face][2]];
+	corner[0][cornerMoves[face][2]] = corner[0][cornerMoves[face][1]];
+	corner[0][cornerMoves[face][1]] = temp;
+}
+
+void twistCounterClockwise(int face) {
+	//twist corrosponding edges clockwise
+	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][1]];
 	edge[0][edgeMoves[face][1]] = edge[0][edgeMoves[face][2]];
 	edge[0][edgeMoves[face][2]] = edge[0][edgeMoves[face][3]];
 	edge[0][edgeMoves[face][3]] = temp;
 	//twist corrosponding corners clockwise
-	temp = cornerMoves[face][0];
+	temp = corner[0][cornerMoves[face][0]];
 	corner[0][cornerMoves[face][0]] = corner[0][cornerMoves[face][1]];
 	corner[0][cornerMoves[face][1]] = corner[0][cornerMoves[face][2]];
 	corner[0][cornerMoves[face][2]] = corner[0][cornerMoves[face][3]];
@@ -121,6 +136,8 @@ int main (){
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[4][0] == 4 and corner[4][1] == 0
+
+
 }
 
 
