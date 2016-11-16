@@ -159,9 +159,34 @@ int main (){
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[4][0] == 4 and corner[4][1] == 0
 
+	//arrays by orientation moves, clockwise
+	char edgeMoves[6][4] = {
+		{0,0,0,0},
+		{0,0,0,0},
+		{1,-1,1,-1},
+		{0,0,0,0},
+		{1,-1,1,-1},
+		{0,0,0,0}
+	};
+
+	char cornerMoves[6][4] = {
+		{0,0,0,0},
+		{1,-1,1,-1},
+		{1,-1,1,-1},
+		{1,-1,1,-1},
+		{1,-1,1,-1},
+		{0,0,0,0}
+	};
+
+
+
+
+
 	colorOfCorners(solvedCorners);
 	colorOfEdges(solvedEdges);
 }
+
+
 /*
 indexes start at top back left and go clockwise
 face 0 would be corner index 2,3,6,7
