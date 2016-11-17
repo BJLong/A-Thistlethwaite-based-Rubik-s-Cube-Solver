@@ -34,6 +34,22 @@ void twistClockwise(int face) {
 	corner[0][cornerMoves[face][3]] = corner[0][cornerMoves[face][2]];
 	corner[0][cornerMoves[face][2]] = corner[0][cornerMoves[face][1]];
 	corner[0][cornerMoves[face][1]] = temp;
+
+	//edge orientation
+	if(face == 2 || face == 4){
+		edge[1][[edgeMoves[face][0]] = (edge[1][[edgeMoves[face][0]] + 1) % 2;
+		edge[1][[edgeMoves[face][1]] = (edge[1][[edgeMoves[face][1]] + 1) % 2;
+		edge[1][[edgeMoves[face][2]] = (edge[1][[edgeMoves[face][2]] + 1) % 2;
+		edge[1][[edgeMoves[face][3]] = (edge[1][[edgeMoves[face][3]] + 1) % 2;
+	}
+
+	//corner orientation
+	if(face != 0 && face != 5){
+		corner[1][cornerMoves[face][0]] = (corner[1][cornerMoves[face][0]] + 1) % 3;
+		corner[1][cornerMoves[face][1]] = (corner[1][cornerMoves[face][1]] + 2) % 3;
+		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 1) % 3;
+		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 2) % 3;
+	}
 }
 
 void twistCounterClockwise(int face) {
