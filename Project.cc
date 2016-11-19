@@ -13,12 +13,12 @@ char edgeMoves[6][4] = {
 	{4,5,6,7}
 };
 char cornerMoves[6][4] = {
-	{0,1,2,3},
-	{1,0,7,6},
-	{1,5,10,6},
-	{2,6,9,7},
-	{3,7,8,2},
-	{9,10,6,8}
+	{0,1,2,3},		//white
+	{1,0,7,6},		//blue
+	{2,1,6,5},		//red
+	{3,2,5,4},		//green
+	{0,3,4,7},		//orange
+	{4,5,6,7}		//yellow
 };
 
 void twistClockwise(int face) {
@@ -28,6 +28,7 @@ void twistClockwise(int face) {
 	edge[0][edgeMoves[face][3]] = edge[0][edgeMoves[face][2]];
 	edge[0][edgeMoves[face][2]] = edge[0][edgeMoves[face][1]];
 	edge[0][edgeMoves[face][1]] = temp;
+
 	//twist corrosponding corners clockwise
 	temp = corner[0][cornerMoves[face][0]];
 	corner[0][cornerMoves[face][0]] = corner[0][cornerMoves[face][3]];
@@ -37,18 +38,18 @@ void twistClockwise(int face) {
 
 	//edge orientation
 	if(face == 2 || face == 4){
-		edge[1][[edgeMoves[face][0]] = (edge[1][[edgeMoves[face][0]] + 1) % 2;
-		edge[1][[edgeMoves[face][1]] = (edge[1][[edgeMoves[face][1]] + 1) % 2;
-		edge[1][[edgeMoves[face][2]] = (edge[1][[edgeMoves[face][2]] + 1) % 2;
-		edge[1][[edgeMoves[face][3]] = (edge[1][[edgeMoves[face][3]] + 1) % 2;
+		edge[1][edgeMoves[face][0]] = (edge[1][edgeMoves[face][0]] + 1) % 2;
+		edge[1][edgeMoves[face][1]] = (edge[1][edgeMoves[face][1]] + 1) % 2;
+		edge[1][edgeMoves[face][2]] = (edge[1][edgeMoves[face][2]] + 1) % 2;
+		edge[1][edgeMoves[face][3]] = (edge[1][edgeMoves[face][3]] + 1) % 2;
 	}
 
 	//corner orientation
 	if(face != 0 && face != 5){
-		corner[1][cornerMoves[face][0]] = (corner[1][cornerMoves[face][0]] + 1) % 3;
-		corner[1][cornerMoves[face][1]] = (corner[1][cornerMoves[face][1]] + 2) % 3;
-		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 1) % 3;
-		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 2) % 3;
+		corner[1][cornerMoves[face][0]] = (corner[1][cornerMoves[face][0]] + 2) % 3;
+		corner[1][cornerMoves[face][1]] = (corner[1][cornerMoves[face][1]] + 1) % 3;
+		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 2) % 3;
+		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 1) % 3;
 	}
 }
 
@@ -161,8 +162,8 @@ int main (){
 	faces:
 	0:white
 	1:blue
-	2:orange
+	2:red
 	3:green
-	4:red
+	4:orange
 	5:yellow
 */
