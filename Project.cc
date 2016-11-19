@@ -84,6 +84,22 @@ void twistCounterClockwise(int face) {
 	}
 }
 
+void halfTwist(int face) {
+	char temp = edge[0][edgeMoves[face][0]];
+	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][2]];
+	edge[0][edgeMoves[face][2]] = temp;
+	temp = edge[0][edgeMoves[face][1]];
+	edge[0][edgeMoves[face][1]] = edge[0][edgeMoves[face][3]];
+	edge[0][edgeMoves[face][3]] = temp;
+
+	temp = corner[0][cornerMoves[face][0]];
+	corner[0][cornerMoves[face][0]] = corner[0][cornerMoves[face][2]];
+	corner[0][cornerMoves[face][2]] = temp;
+	temp = corner[0][cornerMoves[face][1]];
+	corner[0][cornerMoves[face][1]] = corner[0][cornerMoves[face][3]];
+	corner[0][cornerMoves[face][3]] = temp;
+}
+
 void colorOfCorners(char corners[2][8]){
 	for(int i = 0; i < 8;i++){
 		switch(corners[0][i]){
