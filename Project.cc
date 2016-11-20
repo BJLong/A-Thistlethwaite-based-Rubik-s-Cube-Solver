@@ -100,6 +100,54 @@ void halfTwist(int face) {
 	corner[0][cornerMoves[face][3]] = temp;
 }
 
+void slice(int face) {
+	twistClockwise(face);
+	switch(face){
+		case 0:
+			twistCounterClockwise(5);
+			break;
+		case 1:
+			twistCounterClockwise(3);
+			break;
+		case 2:
+			twistCounterClockwise(4);
+			break;
+		case 3:
+			twistCounterClockwise(1);
+			break;
+		case 4:
+			twistCounterClockwise(2);
+			break;
+		case 5:
+			twistCounterClockwise(0);
+			break;
+	}
+}
+
+void antiSlice(int face) {
+	twistClockwise(face);
+	switch(face){
+		case 0:
+			twistClockwise(5);
+			break;
+		case 1:
+			twistClockwise(3);
+			break;
+		case 2:
+			twistClockwise(4);
+			break;
+		case 3:
+			twistClockwise(1);
+			break;
+		case 4:
+			twistClockwise(2);
+			break;
+		case 5:
+			twistClockwise(0);
+			break;
+	}
+}
+
 void colorOfCorners(char corners[2][8]){
 	for(int i = 0; i < 8;i++){
 		switch(corners[0][i]){
