@@ -98,6 +98,21 @@ void halfTwist(int face) {
 	temp = corner[0][cornerMoves[face][1]];
 	corner[0][cornerMoves[face][1]] = corner[0][cornerMoves[face][3]];
 	corner[0][cornerMoves[face][3]] = temp;
+	//moving orientations
+	temp = edge[0][edgeMoves[face][0]];
+	edge[1][edgeMoves[face][0]] = edge[1][edgeMoves[face][2]];
+	edge[1][edgeMoves[face][2]] = temp;
+	temp = edge[1][edgeMoves[face][1]];
+	edge[1][edgeMoves[face][1]] = edge[1][edgeMoves[face][3]];
+	edge[1][edgeMoves[face][3]] = temp;
+
+	temp = corner[1][cornerMoves[face][0]];
+	corner[1][cornerMoves[face][0]] = corner[1][cornerMoves[face][2]];
+	corner[1][cornerMoves[face][2]] = temp;
+	temp = corner[0][cornerMoves[face][1]];
+	corner[1][cornerMoves[face][1]] = corner[1][cornerMoves[face][3]];
+	corner[1][cornerMoves[face][3]] = temp;
+
 }
 
 void slice(int face) {
