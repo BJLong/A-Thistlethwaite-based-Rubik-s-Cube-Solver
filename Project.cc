@@ -194,10 +194,11 @@ int phaseOneEncode(char edges[][]){
 	int result = 0;
 	for(int i = 0; i < 11; i++){
 		result = result << 1;
-		if(edges[1][i] = 1){
+		if(edges[1][i] == 1){
 			result++;
 		}
 	}
+	return result;
 }
 
 void colorOfCorners(char corners[2][8]){
