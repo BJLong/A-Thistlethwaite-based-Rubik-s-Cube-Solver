@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <iostream>
-#include <math.h>
 
 using namespace std;
 
@@ -194,8 +193,9 @@ void phaseOneEncode(char edges[][]){
 	unsigned phaseOne = 0;
 	for(int i = 0; i < 11; i++){
 		if(edges[1][i] = "1"){
-			phaseOne += (1 << i);
+			phaseOne++;
 		}
+		phaseOne = phaseOne << 1;
 	}
 }
 
