@@ -112,7 +112,6 @@ void halfTwist(int face) {
 	temp = corner[0][cornerMoves[face][1]];
 	corner[1][cornerMoves[face][1]] = corner[1][cornerMoves[face][3]];
 	corner[1][cornerMoves[face][3]] = temp;
-
 }
 
 void slice(int face) {
@@ -160,6 +159,13 @@ void antiSlice(int face) {
 		case 5:
 			twistClockwise(0);
 			break;
+	}
+}
+
+void phaseOneEncode(){
+	bool phaseOne[11];
+	for(int i = 0; i < 11; i++){
+		phaseOne[i] = edge[1][i];
 	}
 }
 
@@ -238,7 +244,6 @@ void colorOfEdges(char edges[2][12]){
 	}
 
 }
-
 	
 int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
