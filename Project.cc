@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -51,6 +52,21 @@ void twistClockwise(int face) {
 		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 2) % 3;
 		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 1) % 3;
 	}
+
+	//move orientations
+	temp = edge[1][edgeMoves[face][0]];
+	edge[1][edgeMoves[face][0]] = edge[1][edgeMoves[face][3]];
+	edge[1][edgeMoves[face][3]] = edge[1][edgeMoves[face][2]];
+	edge[1][edgeMoves[face][2]] = edge[1][edgeMoves[face][1]];
+	edge[1][edgeMoves[face][1]] = temp;
+
+	//twist corrosponding corners clockwise
+	temp = corner[1][cornerMoves[face][0]];
+	corner[1][cornerMoves[face][0]] = corner[1][cornerMoves[face][3]];
+	corner[1][cornerMoves[face][3]] = corner[1][cornerMoves[face][2]];
+	corner[1][cornerMoves[face][2]] = corner[1][cornerMoves[face][1]];
+	corner[1][cornerMoves[face][1]] = temp;
+
 }
 
 void twistCounterClockwise(int face) {
@@ -82,6 +98,19 @@ void twistCounterClockwise(int face) {
 		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 1) % 3;
 		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 2) % 3;
 	}
+
+	//move orientations
+	temp = edge[1][edgeMoves[face][0]];
+	edge[1][edgeMoves[face][0]] = edge[1][edgeMoves[face][1]];
+	edge[1][edgeMoves[face][1]] = edge[1][edgeMoves[face][2]];
+	edge[1][edgeMoves[face][2]] = edge[1][edgeMoves[face][3]];
+	edge[1][edgeMoves[face][3]] = temp;
+	//twist corrosponding corners clockwise
+	temp = corner[1][cornerMoves[face][0]];
+	corner[1][cornerMoves[face][0]] = corner[1][cornerMoves[face][1]];
+	corner[1][cornerMoves[face][1]] = corner[1][cornerMoves[face][2]];
+	corner[1][cornerMoves[face][2]] = corner[1][cornerMoves[face][3]];
+	corner[1][cornerMoves[face][3]] = temp;
 }
 
 void halfTwist(int face) {
@@ -99,7 +128,7 @@ void halfTwist(int face) {
 	corner[0][cornerMoves[face][1]] = corner[0][cornerMoves[face][3]];
 	corner[0][cornerMoves[face][3]] = temp;
 	//moving orientations
-	temp = edge[0][edgeMoves[face][0]];
+	temp = edge[1][edgeMoves[face][0]];
 	edge[1][edgeMoves[face][0]] = edge[1][edgeMoves[face][2]];
 	edge[1][edgeMoves[face][2]] = temp;
 	temp = edge[1][edgeMoves[face][1]];
@@ -109,7 +138,7 @@ void halfTwist(int face) {
 	temp = corner[1][cornerMoves[face][0]];
 	corner[1][cornerMoves[face][0]] = corner[1][cornerMoves[face][2]];
 	corner[1][cornerMoves[face][2]] = temp;
-	temp = corner[0][cornerMoves[face][1]];
+	temp = corner[1][cornerMoves[face][1]];
 	corner[1][cornerMoves[face][1]] = corner[1][cornerMoves[face][3]];
 	corner[1][cornerMoves[face][3]] = temp;
 }
@@ -163,9 +192,9 @@ void antiSlice(int face) {
 }
 
 void phaseOneEncode(char edges[][]){
-	char phaseOne[11];
+	int phaseOne = 0;
 	for(int i = 0; i < 11; i++){
-		phaseOne[i] = edges[1][i];
+		phaseOne += edges[1][i] * pow(2,i);
 	}
 }
 
