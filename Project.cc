@@ -66,7 +66,6 @@ void twistClockwise(int face) {
 	corner[1][cornerMoves[face][3]] = corner[1][cornerMoves[face][2]];
 	corner[1][cornerMoves[face][2]] = corner[1][cornerMoves[face][1]];
 	corner[1][cornerMoves[face][1]] = temp;
-
 }
 
 void twistCounterClockwise(int face) {
@@ -189,12 +188,14 @@ void antiSlice(int face) {
 			twistClockwise(0);
 			break;
 	}
-}
 
+}
 void phaseOneEncode(char edges[][]){
-	int phaseOne = 0;
+	unsigned phaseOne = 0;
 	for(int i = 0; i < 11; i++){
-		phaseOne += edges[1][i] * pow(2,i);
+		if(edges[1][i] = "1"){
+			phaseOne += (1 << i);
+		}
 	}
 }
 
