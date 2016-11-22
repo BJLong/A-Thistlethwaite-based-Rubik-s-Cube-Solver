@@ -163,7 +163,7 @@ void antiSlice(int face) {
 }
 
 void phaseOneEncode(){
-	bool phaseOne[11];
+	char phaseOne[11];
 	for(int i = 0; i < 11; i++){
 		phaseOne[i] = edge[1][i];
 	}
