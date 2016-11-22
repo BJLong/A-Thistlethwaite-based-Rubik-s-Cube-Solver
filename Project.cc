@@ -165,6 +165,30 @@ void slice(int face) {
 	}
 }
 
+void halfSlice(int face) {
+	halfTwist(face);
+	switch(face){
+		case 0:
+			halfTwist(5);
+			break;
+		case 1:
+			halfTwist(3);
+			break;
+		case 2:
+			halfTwist(4);
+			break;
+		case 3:
+			halfTwist(1);
+			break;
+		case 4:
+			halfTwist(2);
+			break;
+		case 5:
+			halfTwist(0);
+			break;
+	}
+}
+
 void antiSlice(int face) {
 	twistClockwise(face);
 	switch(face){
@@ -187,7 +211,30 @@ void antiSlice(int face) {
 			twistClockwise(0);
 			break;
 	}
+}
 
+void antiSliceCounterClockwise(int face) {
+	twistCounterClockwise(face);
+	switch(face){
+		case 0:
+			twistCounterClockwise(5);
+			break;
+		case 1:
+			twistCounterClockwise(3);
+			break;
+		case 2:
+			twistCounterClockwise(4);
+			break;
+		case 3:
+			twistCounterClockwise(1);
+			break;
+		case 4:
+			twistCounterClockwise(2);
+			break;
+		case 5:
+			twistCounterClockwise(0);
+			break;
+	}
 }
 
 int phaseOneEncode(char edges[2][12]){
