@@ -190,7 +190,7 @@ void antiSlice(int face) {
 
 }
 
-int phaseOneEncode(char edges[][]){
+int phaseOneEncode(char edges[2][12]){
 	int result = 0;
 	for(int i = 0; i < 11; i++){
 		result = result << 1;
