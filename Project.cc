@@ -256,28 +256,28 @@ int phaseOneEncode(char edges[2][12]){
 void colorOfCorners(char corners[2][8]){
 	for(int i = 0; i < 8;i++){
 		switch(corners[0][i]){
-			case '0': 
+			case 0: 
 				printf("Corner %d has colors white, green, orange\n", i);
 				break;
-			case '1': 
+			case 1: 
 				printf("Corner %d has colors white, blue, orange\n", i);
 				break;
-			case '2': 
+			case 2: 
 				printf("Corner %d has colors white, red, blue\n", i);
 				break;
-			case '3': 
+			case 3: 
 				printf("Corner %d has colors white, red, green\n", i); 
 				break;
-			case '4': 
+			case 4: 
 				printf("Corner %d has colors yellow, green, orange\n", i);
 				break;
-			case '5': 
+			case 5: 
 				printf("Corner %d has colors yellow, blue, orange\n", i);
 				break;
-			case '6': 
+			case 6: 
 				printf("Corner %d has colors yellow, red, blue\n", i);
 				break;
-			case '7': 
+			case 7: 
 				printf("Corner %d has colors yellow, red, green\n", i);
 				break;
 		}
@@ -287,40 +287,40 @@ void colorOfCorners(char corners[2][8]){
 void colorOfEdges(char edges[2][12]){
 	for(int i = 0; i < 12; i++){
 		switch(edges[0][i]){
-			case '0':
+			case 0:
 				printf("Edge %d has colors white, orange\n", i);
 				break;
-			case '1':
+			case 1:
 				printf("Edge %d has colors white, blue\n", i);
 				break;
-			case '2':
+			case 2:
 				printf("Edge %d has colors white, red\n", i);
 				break;
-			case '3':
+			case 3:
 				printf("Edge %d has colors white, green\n", i);
 				break;
-			case '4':
+			case 4:
 				printf("Edge %d has colors green, orange\n", i);
 				break;
-			case '5':
+			case 5:
 				printf("Edge %d has colors orange, blue\n", i);
 				break;
-			case '6':
+			case 6:
 				printf("Edge %d has colors blue, red\n", i);
 				break;
-			case '7':
+			case 7:
 				printf("Edge %d has colors red, green\n", i);
 				break;
-			case '8':
+			case 8:
 				printf("Edge %d has colors yellow, orange\n", i);
 				break;
-			case '9':
+			case 9:
 				printf("Edge %d has colors yellow, blue\n", i);
 				break;
-			case '10':
+			case 10:
 				printf("Edge %d has colors yellow, red\n", i);
 				break;
-			case '11':
+			case 11:
 				printf("Edge %d has colors yellow, green\n", i);
 				break;
 
