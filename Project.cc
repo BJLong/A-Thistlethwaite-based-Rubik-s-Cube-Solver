@@ -323,7 +323,173 @@ void colorOfEdges(char edges[2][12]){
 	}
 
 }
-	
+
+void resetCube(){
+	for(int j = 0; j < 8; j++){
+		corner[0][j] = j;
+		corner[1][j] = 0;
+	}
+	for(int i = 0; i < 12; i++){
+		edge[0][i] = i;
+		edge[1][i] = 0;
+	}
+}
+
+void moveCaller(int num){
+	int white = 0;
+	int blue = 1;
+	int red = 2;
+	int green = 3;
+	int orange = 4;
+	int yellow = 5;
+
+	switch(num){
+		case 0:
+			twistClockwise(white);
+			break;
+		case 1:
+			twistClockwise(blue);
+			break;
+		case 2:
+			twistClockwise(red);
+			break;
+		case 3:
+			twistClockwise(green);
+			break;
+		case 4:
+			twistClockwise(orange);
+			break;
+		case 5:
+			twistClockwise(yellow);
+			break;
+		case 6:
+			twistCounterClockwise(white);
+			break;
+		case 7:
+			twistCounterClockwise(blue);
+			break;
+		case 8:
+			twistCounterClockwise(red);
+			break;
+		case 9:
+			twistCounterClockwise(green);
+			break;
+		case 10:
+			twistCounterClockwise(orange);
+			break;
+		case 11:
+			twistCounterClockwise(yellow);
+			break;
+		case 12:
+			halfTwist(white);
+			break;
+		case 13:
+			halfTwist(blue);
+			break;
+		case 14:
+			halfTwist(red);
+			break;
+		case 15:
+			halfTwist(green);
+			break;
+		case 16:
+			halfTwist(orange);
+			break;
+		case 17:
+			halfTwist(yellow);
+			break;
+		case 18:
+			slice(white);
+			break;
+		case 19:
+			slice(blue);
+			break;
+		case 20:
+			slice(red);
+			break;
+		case 21:
+			slice(green);
+			break;
+		case 22:
+			slice(orange);
+			break;
+		case 23:
+			slice(yellow);
+			break;
+		case 24:
+			halfSlice(white);
+			break;
+		case 25:
+			halfSlice(blue);
+			break;
+		case 26:
+			halfSlice(red);
+			break;
+		case 27:
+			antiSlice(white);
+			break;
+		case 28:
+			antiSlice(blue);
+			break;
+		case 29:
+			antiSlice(red);
+			break;
+		case 30:
+			antiSliceCounterClockwise(white);
+			break;
+		case 31:
+			antiSliceCounterClockwise(blue);
+			break;
+		case 32:
+			antiSliceCounterClockwise(red);
+			break;
+	}
+}
+
+void generateList(){
+	int list[2048][7];
+	for(int i = 0; i < 2048;i++){
+		for (int j = 0; j < 7; j++)
+		{
+			list[i][j] = 33;
+		}
+	}
+	for(int a = 0; a < 33; a++){
+		moveCaller(a);
+		for (int b = 0; b < 33; b++){
+			moveCaller(b);
+			for (int c = 0; c < 33; c++){
+				moveCaller(c);
+				for (int d = 0; d < 33; d++){
+					moveCaller(d);
+					for (int e = 0; e < 33; e++){
+						moveCaller(e);
+						for (int f = 0; f < 33; f++){
+							moveCaller(f);
+							for (int g = 0; g < 33; g++){
+								moveCaller(g);
+								int next = phaseOneEncode(edge);
+								if(list[next][0] == 33){
+									list[next][0] = a;
+									list[next][1] = b;
+									list[next][2] = c;
+									list[next][3] = d;
+									list[next][4] = e;
+									list[next][5] = f;
+									list[next][6] = g;
+								}
+								resetCube();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
 int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
 	char edge[2][12];
@@ -331,9 +497,7 @@ int main (){
 	char corner[2][8];
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
-	//the correct value for the fifth corner would be corner[4][0] == 4 and corner[4][1] == 0
-
-
+	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
 }
 
 
@@ -345,4 +509,39 @@ int main (){
 	3:green
 	4:orange
 	5:yellow
+
+	moves:
+	0:white cw
+	1:blue cw
+	2:red cw
+	3:green cw
+	4:orange cw
+	5:yellow cw
+	6:white ccw
+	7:blue ccw
+	8:red ccw
+	9:green ccw
+	10:orange ccw
+	11:yellow ccw
+	12:white half
+	13:blue half
+	14:red half
+	15:green half
+	16:orange half
+	17:yellow half
+	18:white slice
+	19:blue slice
+	20:red slice
+	21:green slice
+	22:orange slice
+	23:yellow slice
+	24:white/yellow halfslice
+	25:blue/green halfslice
+	26:red/orange halfslice
+	27:white/yellow antislice
+	28:blue/green antislice
+	29:red/orange antislice
+	30:white/yellow antislice ccw
+	31:blue/green antislice ccw
+	32:red/orange antislice ccw
 */
