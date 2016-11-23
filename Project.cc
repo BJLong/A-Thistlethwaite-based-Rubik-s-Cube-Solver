@@ -486,6 +486,12 @@ void generateList(){
 			}
 		}
 	}
+	for (int i = 0; i < 2048; i++){
+		for (int j = 0; j < 7; j++){
+			cout << list[i][j] << " ";
+		}
+		cout << endl;
+	}
 }
 
 
