@@ -503,12 +503,14 @@ void generateList(){
 
 int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
-	char edge[2][12];
+	//char edge[2][12];
 	//corner orientation goes 0,1,2
-	char corner[2][8];
+	//char corner[2][8];
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
+	resetCube();
+	generateList();
 }
 
 
