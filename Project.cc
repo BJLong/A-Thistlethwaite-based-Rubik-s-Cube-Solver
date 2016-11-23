@@ -21,6 +21,11 @@ char cornerMoves[6][4] = {
 	{4,5,6,7}		//yellow
 };
 
+//edge orientation is either flipped [1] or not flipped [0]
+char edge[2][12];
+//corner orientation goes 0,1,2
+char corner[2][8];
+
 void twistClockwise(int face) {
 	//twist corrosponding edges clockwise
 	char temp = edge[0][edgeMoves[face][0]];
