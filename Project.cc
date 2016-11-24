@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <iostream>
-
+#include <queue>
+#include <vector>
+#include <list>
 using namespace std;
 
 //arrays by moves, clockwise
@@ -451,6 +453,117 @@ void moveCaller(int num){
 	}
 }
 
+void oppositeMoveCaller(int num){
+	int white = 0;
+	int blue = 1;
+	int red = 2;
+	int green = 3;
+	int orange = 4;
+	int yellow = 5;
+
+	switch(num){
+		case 0:
+			twistCounterClockwise(white);
+			break;
+		case 1:
+			twistCounterClockwise(blue);
+			break;
+		case 2:
+			twistCounterClockwise(red);
+			break;
+		case 3:
+			twistCounterClockwise(green);
+			break;
+		case 4:
+			twistCounterClockwise(orange);
+			break;
+		case 5:
+			twistCounterClockwise(yellow);
+			break;
+		case 6:
+			twistClockwise(white);
+			break;
+		case 7:
+			twistClockwise(blue);
+			break;
+		case 8:
+			twistClockwise(red);
+			break;
+		case 9:
+			twistClockwise(green);
+			break;
+		case 10:
+			twistClockwise(orange);
+			break;
+		case 11:
+			twistClockwise(yellow);
+			break;
+		case 12:
+			halfTwist(white);
+			break;
+		case 13:
+			halfTwist(blue);
+			break;
+		case 14:
+			halfTwist(red);
+			break;
+		case 15:
+			halfTwist(green);
+			break;
+		case 16:
+			halfTwist(orange);
+			break;
+		case 17:
+			halfTwist(yellow);
+			break;
+		case 18:
+			slice(yellow);
+			break;
+		case 19:
+			slice(green);
+			break;
+		case 20:
+			slice(orange);
+			break;
+		case 21:
+			slice(blue);
+			break;
+		case 22:
+			slice(red);
+			break;
+		case 23:
+			slice(white);
+			break;
+		case 24:
+			halfSlice(white);
+			break;
+		case 25:
+			halfSlice(blue);
+			break;
+		case 26:
+			halfSlice(red);
+			break;
+		case 27:
+			antiSliceCounterClockwise(white);
+			break;
+		case 28:
+			antiSliceCounterClockwise(blue);
+			break;
+		case 29:
+			antiSliceCounterClockwise(red);
+			break;
+		case 30:
+			antiSlice(white);
+			break;
+		case 31:
+			antiSlice(blue);
+			break;
+		case 32:
+			antiSlice(red);
+			break;
+	}
+}
+/*
 void generateList(){
 	int list[2048][7];
 	for(int i = 0; i < 2048;i++){
@@ -459,6 +572,7 @@ void generateList(){
 			list[i][j] = 33;
 		}
 	}
+	int count = 0;
 	for(int a = 0; a < 33; a++){
 		moveCaller(a);
 		for (int b = 0; b < 33; b++){
@@ -482,14 +596,24 @@ void generateList(){
 									list[next][4] = e;
 									list[next][5] = f;
 									list[next][6] = g;
+									//cout << next << " " << a << " " << b << " " << c << " " << d << " " << e << " " << e << " " << f << " " << g << endl;
+									cout << "current num: " << count << endl;
+									count++;
 								}
-								resetCube();
+								oppositeMoveCaller(g);
+								
 							}
+							oppositeMoveCaller(f);
 						}
+						oppositeMoveCaller(e);
 					}
+					oppositeMoveCaller(d);
 				}
+				oppositeMoveCaller(c);
 			}
+			oppositeMoveCaller(b);
 		}
+		oppositeMoveCaller(a);
 	}
 	for (int i = 0; i < 2048; i++){
 		for (int j = 0; j < 7; j++){
@@ -498,8 +622,45 @@ void generateList(){
 		cout << endl;
 	}
 }
+*/
+void generateList(){
+	const int V = 34359738368;
+	vector<list<int> > a(V);
+	int visited[V]={0};
+    queue<int> Q;
+    for (int i = 0; i < 33; ++i){
+    	visited[i]=1;
+    	Q.push(i);
+    }
+    int path[7] = {-1,-1,-1,-1,-1,-1,-1};
 
+    while(!Q.empty())
+    {
+        int x=Q.front();
+        Q.pop(); // pop here. we have x now
 
+        vector<list<int> >::iterator it1=a.begin()+x;
+        list<int> it2=*it1;
+        list<int>::iterator iter=it2.begin();
+        for (int m = 0; m < 7; m++){
+        	if(path[m] != -1){
+        		moveCaller(path[m]);
+        	}
+    	}
+
+        while()
+        {
+            if(visited[*iter]==0)
+            {
+                visited[*iter]=1;
+                Q.push(*iter);
+            }
+        }
+
+        visited[x]=2; // set visited here.
+    }
+    return 0;
+}
 
 int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
@@ -511,6 +672,9 @@ int main (){
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
 	resetCube();
 	generateList();
+
+
+		
 }
 
 
