@@ -5,30 +5,41 @@
 #include <list>
 using namespace std;
 
-//arrays by moves, clockwise
-char edgeMoves[6][4] = {
-	{0,1,2,3},
-	{0,2,11,5},
-	{2,1,6,5},
-	{3,2,5,4},
-	{0,3,4,7},
-	{4,5,6,7}
-};
-char cornerMoves[6][4] = {
-	{0,1,2,3},		//white
-	{1,0,7,6},		//blue
-	{2,1,6,5},		//red
-	{3,2,5,4},		//green
-	{0,3,4,7},		//orange
-	{4,5,6,7}		//yellow
-};
+class cube {
+	private:
+		char edgeMoves[6][4] = {
+			{0,1,2,3},
+			{0,2,11,5},
+			{2,1,6,5},
+			{3,2,5,4},
+			{0,3,4,7},
+			{4,5,6,7}
+		};
+		char cornerMoves[6][4] = {
+			{0,1,2,3},		//white
+			{1,0,7,6},		//blue
+			{2,1,6,5},		//red
+			{3,2,5,4},		//green
+			{0,3,4,7},		//orange
+			{4,5,6,7}		//yellow
+		};
+		char edge[2][12];
+		char corner[2][8];
+	public:
+		void twistClockwise(int);
+		void twistCounterClockwise(int);
+		void halfTwist(int);
+		void slice(int);
+		void halfslice(int);
+		void antislice(int);
+		void antiSliceCounterClockwise(int);
+		int phaseOneEncode(char);
+		void colorOfCorners(char);
+		void colorOfEdges(char);
+		void resetCube();
+}
 
-//edge orientation is either flipped [1] or not flipped [0]
-char edge[2][12];
-//corner orientation goes 0,1,2
-char corner[2][8];
-
-void twistClockwise(int face) {
+void cube::twistClockwise(int face) {
 	//twist corrosponding edges clockwise
 	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][3]];
@@ -74,7 +85,7 @@ void twistClockwise(int face) {
 	corner[1][cornerMoves[face][1]] = temp;
 }
 
-void twistCounterClockwise(int face) {
+void cube::twistCounterClockwise(int face) {
 	//twist corrosponding edges clockwise
 	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][1]];
@@ -118,7 +129,7 @@ void twistCounterClockwise(int face) {
 	corner[1][cornerMoves[face][3]] = temp;
 }
 
-void halfTwist(int face) {
+void cube::halfTwist(int face) {
 	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][2]];
 	edge[0][edgeMoves[face][2]] = temp;
@@ -148,7 +159,7 @@ void halfTwist(int face) {
 	corner[1][cornerMoves[face][3]] = temp;
 }
 
-void slice(int face) {
+void cube::slice(int face) {
 	twistClockwise(face);
 	switch(face){
 		case 0:
@@ -172,7 +183,7 @@ void slice(int face) {
 	}
 }
 
-void halfSlice(int face) {
+void cube::halfSlice(int face) {
 	halfTwist(face);
 	switch(face){
 		case 0:
@@ -196,7 +207,7 @@ void halfSlice(int face) {
 	}
 }
 
-void antiSlice(int face) {
+void cube::antiSlice(int face) {
 	twistClockwise(face);
 	switch(face){
 		case 0:
@@ -220,7 +231,7 @@ void antiSlice(int face) {
 	}
 }
 
-void antiSliceCounterClockwise(int face) {
+void cube::antiSliceCounterClockwise(int face) {
 	twistCounterClockwise(face);
 	switch(face){
 		case 0:
@@ -255,7 +266,7 @@ int phaseOneEncode(char edges[2][12]){
 	return result;
 }
 
-void colorOfCorners(char corners[2][8]){
+void cube::colorOfCorners(char corners[2][8]){
 	for(int i = 0; i < 8;i++){
 		switch(corners[0][i]){
 			case 0: 
@@ -286,7 +297,7 @@ void colorOfCorners(char corners[2][8]){
 	}
 }
 
-void colorOfEdges(char edges[2][12]){
+void cube::colorOfEdges(char edges[2][12]){
 	for(int i = 0; i < 12; i++){
 		switch(edges[0][i]){
 			case 0:
@@ -331,7 +342,7 @@ void colorOfEdges(char edges[2][12]){
 
 }
 
-void resetCube(){
+void cube::resetCube(){
 	for(int j = 0; j < 8; j++){
 		corner[0][j] = j;
 		corner[1][j] = 0;
