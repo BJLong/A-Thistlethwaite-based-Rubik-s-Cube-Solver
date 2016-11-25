@@ -37,6 +37,8 @@ class cube {
 		void colorOfCorners(char);
 		void colorOfEdges(char);
 		void resetCube();
+		void moveCaller(int);
+		void oppositeMoveCaller(int);
 }
 
 void cube::twistClockwise(int face) {
@@ -339,7 +341,6 @@ void cube::colorOfEdges(char edges[2][12]){
 
 		}
 	}
-
 }
 
 void cube::resetCube(){
@@ -353,7 +354,7 @@ void cube::resetCube(){
 	}
 }
 
-void moveCaller(int num){
+void cube::moveCaller(int num){
 	int white = 0;
 	int blue = 1;
 	int red = 2;
@@ -464,7 +465,7 @@ void moveCaller(int num){
 	}
 }
 
-void oppositeMoveCaller(int num){
+void cube::oppositeMoveCaller(int num){
 	int white = 0;
 	int blue = 1;
 	int red = 2;
@@ -634,43 +635,47 @@ void generateList(){
 	}
 }
 */
-void generateList(){
-	const int V = 34359738368;
-	vector<list<int> > a(V);
-	int visited[V]={0};
-    queue<int> Q;
-    for (int i = 0; i < 33; ++i){
-    	visited[i]=1;
-    	Q.push(i);
-    }
-    int path[7] = {-1,-1,-1,-1,-1,-1,-1};
+void generateListOne(){
+	cube c;
+	cube current;
+	c.resetCube();
+	int list[2048][7];
+	for(int i = 0; i < 2048;i++){
+		for (int j = 0; j < 7; j++)
+		{
+			list[i][j] = 33;
+		}
+	}
+	int count = 0;
+	queue <cube> cubes;
+	stack <int> moves, currentMoves;
+	cubes.push(c); //the root cube
+	while(count < 2048){
+	//or while(!cubes.empty()){	
 
-    while(!Q.empty())
-    {
-        int x=Q.front();
-        Q.pop(); // pop here. we have x now
-
-        vector<list<int> >::iterator it1=a.begin()+x;
-        list<int> it2=*it1;
-        list<int>::iterator iter=it2.begin();
-        for (int m = 0; m < 7; m++){
-        	if(path[m] != -1){
-        		moveCaller(path[m]);
-        	}
-    	}
-
-        while()
-        {
-            if(visited[*iter]==0)
-            {
-                visited[*iter]=1;
-                Q.push(*iter);
-            }
-        }
-
-        visited[x]=2; // set visited here.
-    }
-    return 0;
+		current = cubes.front();
+		cubes.pop();
+		for(int i = 0; i < 33; i++){
+			current.moveCaller(i);
+			moves.push(i);
+			int encoding = phaseOneEncode(edge);
+			if(list[encoding][0] == 33){
+				cubes.push(current);
+				currentMoves = moves;
+				for(int j = 0; j < 7; j++){
+					if(!currentMoves.empty()){
+						list[encoding][j] = currentMoves.top();
+						currentMoves.pop();
+					}else{
+						list[encoding][j] = -1;
+					}
+				}
+			}
+			current.oppositeMoveCaller(i);
+			moves.pop();
+		}
+		cubes.pop();
+	}
 }
 
 int main (){
@@ -681,9 +686,8 @@ int main (){
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
-	resetCube();
-	generateList();
 
+	generateListOne();
 
 		
 }
