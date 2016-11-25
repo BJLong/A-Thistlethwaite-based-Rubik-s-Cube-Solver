@@ -3,43 +3,45 @@
 #include <queue>
 #include <vector>
 #include <list>
+#include <stack>
 using namespace std;
 
 class cube {
 	private:
-		char edgeMoves[6][4] = {
-			{0,1,2,3},
-			{0,2,11,5},
-			{2,1,6,5},
-			{3,2,5,4},
-			{0,3,4,7},
-			{4,5,6,7}
-		};
-		char cornerMoves[6][4] = {
-			{0,1,2,3},		//white
-			{1,0,7,6},		//blue
-			{2,1,6,5},		//red
-			{3,2,5,4},		//green
-			{0,3,4,7},		//orange
-			{4,5,6,7}		//yellow
-		};
-		char edge[2][12];
+		static const char edgeMoves[6][4];
+		static const char cornerMoves[6][4];
+		char edge[2][12];;
 		char corner[2][8];
 	public:
 		void twistClockwise(int);
 		void twistCounterClockwise(int);
 		void halfTwist(int);
 		void slice(int);
-		void halfslice(int);
-		void antislice(int);
+		void halfSlice(int);
+		void antiSlice(int);
 		void antiSliceCounterClockwise(int);
-		int phaseOneEncode(char);
-		void colorOfCorners(char);
-		void colorOfEdges(char);
+		int phaseOneEncode();
 		void resetCube();
 		void moveCaller(int);
 		void oppositeMoveCaller(int);
-}
+};
+
+const char cube::edgeMoves[6][4] = {
+	{0,1,2,3},
+	{0,2,11,5},
+	{2,1,6,5},
+	{3,2,5,4},
+	{0,3,4,7},
+	{4,5,6,7}
+};
+const char cube::cornerMoves[6][4] = {
+	{0,1,2,3},		//white
+	{1,0,7,6},		//blue
+	{2,1,6,5},		//red
+	{3,2,5,4},		//green
+	{0,3,4,7},		//orange
+	{4,5,6,7}		//yellow
+};
 
 void cube::twistClockwise(int face) {
 	//twist corrosponding edges clockwise
@@ -257,90 +259,15 @@ void cube::antiSliceCounterClockwise(int face) {
 	}
 }
 
-int phaseOneEncode(char edges[2][12]){
+int cube::phaseOneEncode(){
 	int result = 0;
 	for(int i = 0; i < 11; i++){
 		result = result << 1;
-		if(edges[1][i] == 1){
+		if(edge[1][i] == 1){
 			result++;
 		}
 	}
 	return result;
-}
-
-void cube::colorOfCorners(char corners[2][8]){
-	for(int i = 0; i < 8;i++){
-		switch(corners[0][i]){
-			case 0: 
-				printf("Corner %d has colors white, green, orange\n", i);
-				break;
-			case 1: 
-				printf("Corner %d has colors white, blue, orange\n", i);
-				break;
-			case 2: 
-				printf("Corner %d has colors white, red, blue\n", i);
-				break;
-			case 3: 
-				printf("Corner %d has colors white, red, green\n", i); 
-				break;
-			case 4: 
-				printf("Corner %d has colors yellow, green, orange\n", i);
-				break;
-			case 5: 
-				printf("Corner %d has colors yellow, blue, orange\n", i);
-				break;
-			case 6: 
-				printf("Corner %d has colors yellow, red, blue\n", i);
-				break;
-			case 7: 
-				printf("Corner %d has colors yellow, red, green\n", i);
-				break;
-		}
-	}
-}
-
-void cube::colorOfEdges(char edges[2][12]){
-	for(int i = 0; i < 12; i++){
-		switch(edges[0][i]){
-			case 0:
-				printf("Edge %d has colors white, orange\n", i);
-				break;
-			case 1:
-				printf("Edge %d has colors white, blue\n", i);
-				break;
-			case 2:
-				printf("Edge %d has colors white, red\n", i);
-				break;
-			case 3:
-				printf("Edge %d has colors white, green\n", i);
-				break;
-			case 4:
-				printf("Edge %d has colors green, orange\n", i);
-				break;
-			case 5:
-				printf("Edge %d has colors orange, blue\n", i);
-				break;
-			case 6:
-				printf("Edge %d has colors blue, red\n", i);
-				break;
-			case 7:
-				printf("Edge %d has colors red, green\n", i);
-				break;
-			case 8:
-				printf("Edge %d has colors yellow, orange\n", i);
-				break;
-			case 9:
-				printf("Edge %d has colors yellow, blue\n", i);
-				break;
-			case 10:
-				printf("Edge %d has colors yellow, red\n", i);
-				break;
-			case 11:
-				printf("Edge %d has colors yellow, green\n", i);
-				break;
-
-		}
-	}
 }
 
 void cube::resetCube(){
@@ -648,17 +575,17 @@ void generateListOne(){
 	}
 	int count = 0;
 	queue <cube> cubes;
-	stack <int> moves, currentMoves;
+	stack<int> moves;
+	stack<int> currentMoves;
 	cubes.push(c); //the root cube
-	while(count < 2048){
-	//or while(!cubes.empty()){	
-
+	//while(count < 2048){
+	while(!cubes.empty()){	
 		current = cubes.front();
 		cubes.pop();
 		for(int i = 0; i < 33; i++){
 			current.moveCaller(i);
 			moves.push(i);
-			int encoding = phaseOneEncode(edge);
+			int encoding = current.phaseOneEncode();
 			if(list[encoding][0] == 33){
 				cubes.push(current);
 				currentMoves = moves;
@@ -670,6 +597,8 @@ void generateListOne(){
 						list[encoding][j] = -1;
 					}
 				}
+				count++;
+				cout << "current encoded: " << count << endl;
 			}
 			current.oppositeMoveCaller(i);
 			moves.pop();
@@ -689,7 +618,7 @@ int main (){
 
 	generateListOne();
 
-		
+	return 0;
 }
 
 
