@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <stack>
+#include <fstream>
 using namespace std;
 
 class cube {
@@ -23,7 +24,7 @@ class cube {
 		int phaseOneEncode();
 		void resetCube();
 		void moveCaller(int);
-		void oppositeMoveCaller(int);
+		void oppositeOf(int);
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -392,7 +393,7 @@ void cube::moveCaller(int num){
 	}
 }
 
-void cube::oppositeMoveCaller(int num){
+void cube::oppositeOf(int num){
 	int white = 0;
 	int blue = 1;
 	int red = 2;
@@ -402,104 +403,71 @@ void cube::oppositeMoveCaller(int num){
 
 	switch(num){
 		case 0:
-			twistCounterClockwise(white);
-			break;
+			return 6;
 		case 1:
-			twistCounterClockwise(blue);
-			break;
+			return 7;
 		case 2:
-			twistCounterClockwise(red);
-			break;
+			return 8;
 		case 3:
-			twistCounterClockwise(green);
-			break;
+			return 9;
 		case 4:
-			twistCounterClockwise(orange);
-			break;
+			return 10;
 		case 5:
-			twistCounterClockwise(yellow);
-			break;
+			return 11;
 		case 6:
-			twistClockwise(white);
-			break;
+			return 0;
 		case 7:
-			twistClockwise(blue);
-			break;
+			return 1;
 		case 8:
-			twistClockwise(red);
-			break;
+			return 2;
 		case 9:
-			twistClockwise(green);
-			break;
+			return 3;
 		case 10:
-			twistClockwise(orange);
-			break;
+			return 4;
 		case 11:
-			twistClockwise(yellow);
-			break;
+			return 5;
 		case 12:
-			halfTwist(white);
-			break;
+			return 12;
 		case 13:
-			halfTwist(blue);
-			break;
+			return 13;
 		case 14:
-			halfTwist(red);
-			break;
+			return 14;
 		case 15:
-			halfTwist(green);
-			break;
+			return 15;
 		case 16:
-			halfTwist(orange);
-			break;
+			return 16;
 		case 17:
-			halfTwist(yellow);
-			break;
+			return 17;
 		case 18:
-			slice(yellow);
-			break;
+			return 23;
 		case 19:
-			slice(green);
-			break;
+			return 21;
 		case 20:
-			slice(orange);
-			break;
+			return 22;
 		case 21:
-			slice(blue);
-			break;
+			return 19;
 		case 22:
-			slice(red);
-			break;
+			return 20;
 		case 23:
-			slice(white);
-			break;
+			return 18;
 		case 24:
-			halfSlice(white);
-			break;
+			return 24;
 		case 25:
-			halfSlice(blue);
-			break;
+			return 25;
 		case 26:
-			halfSlice(red);
-			break;
+			return 26;
 		case 27:
-			antiSliceCounterClockwise(white);
-			break;
+			return 30;
 		case 28:
-			antiSliceCounterClockwise(blue);
-			break;
+			return 31;
 		case 29:
-			antiSliceCounterClockwise(red);
-			break;
+			return 32;
 		case 30:
-			antiSlice(white);
-			break;
+			return 27;
 		case 31:
-			antiSlice(blue);
-			break;
+			return 28;
 		case 32:
-			antiSlice(red);
-			break;
+			return 29;
 	}
 }
 /*
@@ -539,20 +507,20 @@ void generateList(){
 									cout << "current num: " << count << endl;
 									count++;
 								}
-								oppositeMoveCaller(g);
+								oppositeOf(g);
 								
 							}
-							oppositeMoveCaller(f);
+							oppositeOf(f);
 						}
-						oppositeMoveCaller(e);
+						oppositeOf(e);
 					}
-					oppositeMoveCaller(d);
+					oppositeOf(d);
 				}
-				oppositeMoveCaller(c);
+				oppositeOf(c);
 			}
-			oppositeMoveCaller(b);
+			oppositeOf(b);
 		}
-		oppositeMoveCaller(a);
+		oppositeOf(a);
 	}
 	for (int i = 0; i < 2048; i++){
 		for (int j = 0; j < 7; j++){
@@ -566,44 +534,49 @@ void generateListOne(){
 	cube c;
 	cube current;
 	c.resetCube();
-	int list[2048][7];
+	int list[2048][2];
 	for(int i = 0; i < 2048;i++){
-		for (int j = 0; j < 7; j++)
-		{
-			list[i][j] = 33;
-		}
+		list[i][0] = 33;
+		list[i][1] = 33;
 	}
-	int count = 0;
+	int count, prevEncoding, encoding = 0;
 	queue <cube> cubes;
 	stack<int> moves;
 	stack<int> currentMoves;
 	cubes.push(c); //the root cube
 	//while(count < 2048){
+	ofstream fout("test.txt"); 
 	while(!cubes.empty()){	
 		current = cubes.front();
 		cubes.pop();
 		for(int i = 0; i < 33; i++){
+			prevEncoding = current.phaseOneEncode();
 			current.moveCaller(i);
 			moves.push(i);
-			int encoding = current.phaseOneEncode();
+			encoding = current.phaseOneEncode();
 			if(list[encoding][0] == 33){
 				cubes.push(current);
-				currentMoves = moves;
-				for(int j = 0; j < 7; j++){
-					if(!currentMoves.empty()){
-						list[encoding][j] = currentMoves.top();
-						currentMoves.pop();
-					}else{
-						list[encoding][j] = -1;
-					}
-				}
+				list[encoding][1] = prevEncoding;
+				list[encoding][0] = i;
 				count++;
-				cout << "current encoded: " << count << endl;
+				cout << "current encoded: " << count << endl;c
 			}
-			current.oppositeMoveCaller(i);
+			current.oppositeOf(i);
 			moves.pop();
 		}
 		cubes.pop();
+		if(fout.is_open()){
+			int y;
+			for(y = 0; y < 2048; y++){
+				fout << "encode num: " << y << "     moves:";
+				for(int w = 0;w < 7 ; w++){
+					fout << " " << list[y][w];
+				}
+				fout << endl;
+			}
+		}else{
+			cout << "File could not be opened." << endl;
+		}
 	}
 }
 
@@ -617,6 +590,8 @@ int main (){
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
 
 	generateListOne();
+	
+
 
 	return 0;
 }
