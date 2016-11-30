@@ -1,18 +1,41 @@
 #include <stdio.h>
 #include <iostream>
-
+#include <queue>
+#include <vector>
+#include <list>
+#include <stack>
+#include <fstream>
 using namespace std;
 
-//arrays by moves, clockwise
-char edgeMoves[6][4] = {
-	{0,1,2,3},
-	{0,2,11,5},
-	{2,1,6,5},
-	{3,2,5,4},
-	{0,3,4,7},
-	{4,5,6,7}
+class cube {
+	private:
+		static const char edgeMoves[6][4];
+		static const char cornerMoves[6][4];
+		char edge[2][12];;
+		char corner[2][8];
+	public:
+		void twistClockwise(int);
+		void twistCounterClockwise(int);
+		void halfTwist(int);
+		void slice(int);
+		void halfSlice(int);
+		void antiSlice(int);
+		void antiSliceCounterClockwise(int);
+		int phaseOneEncode();
+		void resetCube();
+		void moveCaller(int);
+		int oppositeOf(int);
 };
-char cornerMoves[6][4] = {
+
+const char cube::edgeMoves[6][4] = {
+	{0,1,2,3},
+	{0,4,11,5},
+	{1,5,10,6},
+	{2,6,9,7},
+	{3,7,8,0},
+	{8,9,10,11}
+};
+const char cube::cornerMoves[6][4] = {
 	{0,1,2,3},		//white
 	{1,0,7,6},		//blue
 	{2,1,6,5},		//red
@@ -21,12 +44,7 @@ char cornerMoves[6][4] = {
 	{4,5,6,7}		//yellow
 };
 
-//edge orientation is either flipped [1] or not flipped [0]
-char edge[2][12];
-//corner orientation goes 0,1,2
-char corner[2][8];
-
-void twistClockwise(int face) {
+void cube::twistClockwise(int face) {
 	//twist corrosponding edges clockwise
 	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][3]];
@@ -72,7 +90,7 @@ void twistClockwise(int face) {
 	corner[1][cornerMoves[face][1]] = temp;
 }
 
-void twistCounterClockwise(int face) {
+void cube::twistCounterClockwise(int face) {
 	//twist corrosponding edges clockwise
 	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][1]];
@@ -116,7 +134,7 @@ void twistCounterClockwise(int face) {
 	corner[1][cornerMoves[face][3]] = temp;
 }
 
-void halfTwist(int face) {
+void cube::halfTwist(int face) {
 	char temp = edge[0][edgeMoves[face][0]];
 	edge[0][edgeMoves[face][0]] = edge[0][edgeMoves[face][2]];
 	edge[0][edgeMoves[face][2]] = temp;
@@ -146,7 +164,7 @@ void halfTwist(int face) {
 	corner[1][cornerMoves[face][3]] = temp;
 }
 
-void slice(int face) {
+void cube::slice(int face) {
 	twistClockwise(face);
 	switch(face){
 		case 0:
@@ -170,7 +188,7 @@ void slice(int face) {
 	}
 }
 
-void halfSlice(int face) {
+void cube::halfSlice(int face) {
 	halfTwist(face);
 	switch(face){
 		case 0:
@@ -194,7 +212,7 @@ void halfSlice(int face) {
 	}
 }
 
-void antiSlice(int face) {
+void cube::antiSlice(int face) {
 	twistClockwise(face);
 	switch(face){
 		case 0:
@@ -218,7 +236,7 @@ void antiSlice(int face) {
 	}
 }
 
-void antiSliceCounterClockwise(int face) {
+void cube::antiSliceCounterClockwise(int face) {
 	twistCounterClockwise(face);
 	switch(face){
 		case 0:
@@ -242,94 +260,18 @@ void antiSliceCounterClockwise(int face) {
 	}
 }
 
-int phaseOneEncode(char edges[2][12]){
+int cube::phaseOneEncode(){
 	int result = 0;
 	for(int i = 0; i < 11; i++){
 		result = result << 1;
-		if(edges[1][i] == 1){
+		if(edge[1][i] == 1){
 			result++;
 		}
 	}
 	return result;
 }
 
-void colorOfCorners(char corners[2][8]){
-	for(int i = 0; i < 8;i++){
-		switch(corners[0][i]){
-			case 0: 
-				printf("Corner %d has colors white, green, orange\n", i);
-				break;
-			case 1: 
-				printf("Corner %d has colors white, blue, orange\n", i);
-				break;
-			case 2: 
-				printf("Corner %d has colors white, red, blue\n", i);
-				break;
-			case 3: 
-				printf("Corner %d has colors white, red, green\n", i); 
-				break;
-			case 4: 
-				printf("Corner %d has colors yellow, green, orange\n", i);
-				break;
-			case 5: 
-				printf("Corner %d has colors yellow, blue, orange\n", i);
-				break;
-			case 6: 
-				printf("Corner %d has colors yellow, red, blue\n", i);
-				break;
-			case 7: 
-				printf("Corner %d has colors yellow, red, green\n", i);
-				break;
-		}
-	}
-}
-
-void colorOfEdges(char edges[2][12]){
-	for(int i = 0; i < 12; i++){
-		switch(edges[0][i]){
-			case 0:
-				printf("Edge %d has colors white, orange\n", i);
-				break;
-			case 1:
-				printf("Edge %d has colors white, blue\n", i);
-				break;
-			case 2:
-				printf("Edge %d has colors white, red\n", i);
-				break;
-			case 3:
-				printf("Edge %d has colors white, green\n", i);
-				break;
-			case 4:
-				printf("Edge %d has colors green, orange\n", i);
-				break;
-			case 5:
-				printf("Edge %d has colors orange, blue\n", i);
-				break;
-			case 6:
-				printf("Edge %d has colors blue, red\n", i);
-				break;
-			case 7:
-				printf("Edge %d has colors red, green\n", i);
-				break;
-			case 8:
-				printf("Edge %d has colors yellow, orange\n", i);
-				break;
-			case 9:
-				printf("Edge %d has colors yellow, blue\n", i);
-				break;
-			case 10:
-				printf("Edge %d has colors yellow, red\n", i);
-				break;
-			case 11:
-				printf("Edge %d has colors yellow, green\n", i);
-				break;
-
-		}
-	}
-
-}
-
-void resetCube(){
+void cube::resetCube(){
 	for(int j = 0; j < 8; j++){
 		corner[0][j] = j;
 		corner[1][j] = 0;
@@ -340,7 +282,7 @@ void resetCube(){
 	}
 }
 
-void moveCaller(int num){
+void cube::moveCaller(int num){
 	int white = 0;
 	int blue = 1;
 	int red = 2;
@@ -451,6 +393,84 @@ void moveCaller(int num){
 	}
 }
 
+int cube::oppositeOf(int num){
+	int white = 0;
+	int blue = 1;
+	int red = 2;
+	int green = 3;
+	int orange = 4;
+	int yellow = 5;
+
+	switch(num){
+		case 0:
+			return 6;
+		case 1:
+			return 7;
+		case 2:
+			return 8;
+		case 3:
+			return 9;
+		case 4:
+			return 10;
+		case 5:
+			return 11;
+		case 6:
+			return 0;
+		case 7:
+			return 1;
+		case 8:
+			return 2;
+		case 9:
+			return 3;
+		case 10:
+			return 4;
+		case 11:
+			return 5;
+		case 12:
+			return 12;
+		case 13:
+			return 13;
+		case 14:
+			return 14;
+		case 15:
+			return 15;
+		case 16:
+			return 16;
+		case 17:
+			return 17;
+		case 18:
+			return 23;
+		case 19:
+			return 21;
+		case 20:
+			return 22;
+		case 21:
+			return 19;
+		case 22:
+			return 20;
+		case 23:
+			return 18;
+		case 24:
+			return 24;
+		case 25:
+			return 25;
+		case 26:
+			return 26;
+		case 27:
+			return 30;
+		case 28:
+			return 31;
+		case 29:
+			return 32;
+		case 30:
+			return 27;
+		case 31:
+			return 28;
+		case 32:
+			return 29;
+	}
+}
+/*
 void generateList(){
 	int list[2048][7];
 	for(int i = 0; i < 2048;i++){
@@ -459,6 +479,7 @@ void generateList(){
 			list[i][j] = 33;
 		}
 	}
+	int count = 0;
 	for(int a = 0; a < 33; a++){
 		moveCaller(a);
 		for (int b = 0; b < 33; b++){
@@ -482,14 +503,24 @@ void generateList(){
 									list[next][4] = e;
 									list[next][5] = f;
 									list[next][6] = g;
+									//cout << next << " " << a << " " << b << " " << c << " " << d << " " << e << " " << e << " " << f << " " << g << endl;
+									cout << "current num: " << count << endl;
+									count++;
 								}
-								resetCube();
+								oppositeOf(g);
+								
 							}
+							oppositeOf(f);
 						}
+						oppositeOf(e);
 					}
+					oppositeOf(d);
 				}
+				oppositeOf(c);
 			}
+			oppositeOf(b);
 		}
+		oppositeOf(a);
 	}
 	for (int i = 0; i < 2048; i++){
 		for (int j = 0; j < 7; j++){
@@ -498,8 +529,53 @@ void generateList(){
 		cout << endl;
 	}
 }
-
-
+*/
+void generateListOne(){
+	cube c;
+	cube current;
+	c.resetCube();
+	int list[2048][2];
+	for(int i = 0; i < 2048;i++){
+		list[i][0] = 33;
+		list[i][1] = 33;
+	}
+	int count = 0;
+	int prevEncoding = 0;
+	int encoding = 0;
+	queue <cube> cubes;
+	cubes.push(c); //the root cube
+	//while(count < 2048){
+	while(!cubes.empty()){
+		current = cubes.front();
+		cubes.pop();
+		for(int i = 0; i < 33; i++){
+			prevEncoding = current.phaseOneEncode();
+			current.moveCaller(i);
+			encoding = current.phaseOneEncode();
+			if(list[encoding][0] == 33){
+				cubes.push(current);
+				list[encoding][1] = prevEncoding;
+				list[encoding][0] = current.oppositeOf(i);
+				count++;
+				cout << "current encoded: " << count << endl;
+			}
+			current.moveCaller(current.oppositeOf(i));
+		}
+		cubes.pop();
+	}
+	ofstream fout("test.txt"); 
+	if(fout.is_open()){
+		int y;
+		for(y = 0; y < 2048; y++){
+			fout << "encode num: " << y << "     move to next:";
+			fout << " " << list[y][0];
+			fout << " destination: " << list[y][1];
+			fout << endl;
+		}
+	}else{
+		cout << "File could not be opened." << endl;
+	}
+}
 
 int main (){
 	//edge orientation is either flipped [1] or not flipped [0]
@@ -509,8 +585,12 @@ int main (){
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
-	resetCube();
-	generateList();
+
+	generateListOne();
+	
+
+
+	return 0;
 }
 
 
