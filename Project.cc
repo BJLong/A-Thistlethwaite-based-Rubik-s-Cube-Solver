@@ -24,7 +24,7 @@ class cube {
 		int phaseOneEncode();
 		void resetCube();
 		void moveCaller(int);
-		void oppositeOf(int);
+		int oppositeOf(int);
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -393,7 +393,7 @@ void cube::moveCaller(int num){
 	}
 }
 
-void cube::oppositeOf(int num){
+int cube::oppositeOf(int num){
 	int white = 0;
 	int blue = 1;
 	int red = 2;
@@ -539,14 +539,15 @@ void generateListOne(){
 		list[i][0] = 33;
 		list[i][1] = 33;
 	}
-	int count, prevEncoding, encoding = 0;
+	int count = 0;
+	int prevEncoding = 0;
+	int encoding = 0;
 	queue <cube> cubes;
 	stack<int> moves;
 	stack<int> currentMoves;
 	cubes.push(c); //the root cube
 	//while(count < 2048){
-	ofstream fout("test.txt"); 
-	while(!cubes.empty()){	
+	while(!cubes.empty()){
 		current = cubes.front();
 		cubes.pop();
 		for(int i = 0; i < 33; i++){
@@ -559,24 +560,12 @@ void generateListOne(){
 				list[encoding][1] = prevEncoding;
 				list[encoding][0] = i;
 				count++;
-				cout << "current encoded: " << count << endl;c
+				cout << "current encoded: " << count << endl;
 			}
-			current.oppositeOf(i);
+			current.moveCaller(current.oppositeOf(i));
 			moves.pop();
 		}
 		cubes.pop();
-		if(fout.is_open()){
-			int y;
-			for(y = 0; y < 2048; y++){
-				fout << "encode num: " << y << "     moves:";
-				for(int w = 0;w < 7 ; w++){
-					fout << " " << list[y][w];
-				}
-				fout << endl;
-			}
-		}else{
-			cout << "File could not be opened." << endl;
-		}
 	}
 }
 
