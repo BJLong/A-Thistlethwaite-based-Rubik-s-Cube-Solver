@@ -29,11 +29,11 @@ class cube {
 
 const char cube::edgeMoves[6][4] = {
 	{0,1,2,3},
-	{0,2,11,5},
-	{2,1,6,5},
-	{3,2,5,4},
-	{0,3,4,7},
-	{4,5,6,7}
+	{0,4,11,5},
+	{1,5,10,6},
+	{2,6,9,7},
+	{3,7,8,0},
+	{8,9,10,11}
 };
 const char cube::cornerMoves[6][4] = {
 	{0,1,2,3},		//white
@@ -543,8 +543,6 @@ void generateListOne(){
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
-	stack<int> moves;
-	stack<int> currentMoves;
 	cubes.push(c); //the root cube
 	//while(count < 2048){
 	while(!cubes.empty()){
@@ -553,7 +551,6 @@ void generateListOne(){
 		for(int i = 0; i < 33; i++){
 			prevEncoding = current.phaseOneEncode();
 			current.moveCaller(i);
-			moves.push(i);
 			encoding = current.phaseOneEncode();
 			if(list[encoding][0] == 33){
 				cubes.push(current);
@@ -563,7 +560,6 @@ void generateListOne(){
 				cout << "current encoded: " << count << endl;
 			}
 			current.moveCaller(current.oppositeOf(i));
-			moves.pop();
 		}
 		cubes.pop();
 	}
