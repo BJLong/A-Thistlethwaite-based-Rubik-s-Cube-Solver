@@ -3,7 +3,6 @@
 #include <queue>
 #include <vector>
 #include <list>
-#include <stack>
 #include <fstream>
 using namespace std;
 
@@ -25,6 +24,7 @@ class cube {
 		void resetCube();
 		void moveCaller(int);
 		int oppositeOf(int);
+		int phaseTwoEncode();
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -575,6 +575,32 @@ void generateListOne(){
 	}else{
 		cout << "File could not be opened." << endl;
 	}
+}
+
+int cube::phaseTwoEncode(){
+	int result = 0;
+	int c = 0;
+	int e = 0;
+	int eighthCorner=0;
+	//corner encoding
+	for(int i = 0; i < 7; i++){
+		c *= 3;
+		if(corner[1][i] == 1){
+			c++;
+		}else if(corner[1][i] == 2){
+			c += 2;
+		}
+		eighthCorner += corner[1][i];
+	}
+	eighthCorner = eighthCorner % 3;
+
+	//edge encoding;
+	
+	return result;
+}
+
+void generateListTwo(){
+
 }
 
 int main (){
