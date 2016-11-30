@@ -555,13 +555,25 @@ void generateListOne(){
 			if(list[encoding][0] == 33){
 				cubes.push(current);
 				list[encoding][1] = prevEncoding;
-				list[encoding][0] = i;
+				list[encoding][0] = current.oppositeOf(i);
 				count++;
 				cout << "current encoded: " << count << endl;
 			}
 			current.moveCaller(current.oppositeOf(i));
 		}
 		cubes.pop();
+	}
+	ofstream fout("test.txt"); 
+	if(fout.is_open()){
+		int y;
+		for(y = 0; y < 2048; y++){
+			fout << "encode num: " << y << "     move to next:";
+			fout << " " << list[y][0];
+			fout << " destination: " << list[y][1];
+			fout << endl;
+		}
+	}else{
+		cout << "File could not be opened." << endl;
 	}
 }
 
