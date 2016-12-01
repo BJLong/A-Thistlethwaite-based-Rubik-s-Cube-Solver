@@ -646,7 +646,6 @@ int main (){
 	//generateListOne();
 	cube b;
 	b.resetCube();
-	b.moveCaller(26);
 	int x = b.phaseTwoEncode();
 	cout << endl << "Phase 2: " << x << endl;
 
