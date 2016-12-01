@@ -584,49 +584,50 @@ int choose(int n,int k){
 }
 
 int cube::phaseTwoEncode(){
-	int result = 0;
-	int cornerEncode = 0;
-	int e = 0;
-	int eighthCorner=0;
-	//corner encoding
-	for(int i = 0; i < 7; i++){
-		cornerEncode *= 3;
-		cornerEncode += corner[1][i];
-		eighthCorner += corner[1][i];
-	}
-	eighthCorner = eighthCorner % 3;
+	// int result = 0;
+	// int cornerEncode = 0;
+	// int e = 0;
+	// int eighthCorner=0;
+	// //corner encoding
+	// for(int i = 0; i < 7; i++){
+	// 	cornerEncode *= 3;
+	// 	cornerEncode += corner[1][i];
+	// 	eighthCorner += corner[1][i];
+	// }
+	// eighthCorner = eighthCorner % 3;
 
 	//edge encoding;
 	int edgeEncode = 0;
 	vector<char> edgeIndex;
-	for(int i = 0; i > 11; i++){
+	for(int i = 0; i < 11; i++){
 		switch(edge[0][i]){
 			case 4:
-				edgeIndex.push(i);
+				edgeIndex.push_back(i);
 				break;
 			case 5:
-				edgeIndex.push(i);
+				edgeIndex.push_back(i);
 				break;
 			case 6:
-				edgeIndex.push(i);
+				edgeIndex.push_back(i);
 				break;
 			case 7:
-				edgeIndex.push(i);
+				edgeIndex.push_back(i);
 				break;
 			default:
 				break;
 		}
 	}
-	edgeEncode += choose(edgeIndex.back(),4);
-	edgeIndex.pop();
-	edgeEncode += choose(edgeIndex.back(),3);
-	edgeIndex.pop();
-	edgeEncode += choose(edgeIndex.back(),2);
-	edgeIndex.pop();
-	edgeEncode += choose(edgeIndex.back(),1);
-	edgeIndex.pop();
-
-	return result;
+	if(!edgeIndex.empty()){
+		edgeEncode += choose(edgeIndex.back(),4);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),3);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),2);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),1);
+		edgeIndex.pop_back();
+	}else{cout << "wrong" << endl;}
+	return edgeEncode;
 }
 
 void generateListTwo(){
@@ -642,8 +643,12 @@ int main (){
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
 
-	generateListOne();
-	
+	//generateListOne();
+	cube b;
+	b.resetCube();
+	b.moveCaller(26);
+	int x = b.phaseTwoEncode();
+	cout << endl << "Phase 2: " << x << endl;
 
 
 	return 0;
