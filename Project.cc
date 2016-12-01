@@ -584,17 +584,18 @@ int choose(int n,int k){
 }
 
 int cube::phaseTwoEncode(){
-	// int result = 0;
-	// int cornerEncode = 0;
-	// int e = 0;
-	// int eighthCorner=0;
-	// //corner encoding
-	// for(int i = 0; i < 7; i++){
-	// 	cornerEncode *= 3;
-	// 	cornerEncode += corner[1][i];
-	// 	eighthCorner += corner[1][i];
-	// }
-	// eighthCorner = eighthCorner % 3;
+	int result = 0;
+	int cornerEncode = 0;
+	int e = 0;
+	int eighthCorner=0;
+	//corner encoding
+	for(int i = 0; i < 7; i++){
+		cornerEncode *= 3;
+		cornerEncode += corner[1][i];
+		eighthCorner += corner[1][i];
+	}
+	eighthCorner = eighthCorner % 3;
+	cout << "cornerEncode: " << cornerEncode << endl;
 
 	//edge encoding;
 	int edgeEncode = 0;
@@ -627,7 +628,8 @@ int cube::phaseTwoEncode(){
 		edgeEncode += choose(edgeIndex.back(),1);
 		edgeIndex.pop_back();
 	}else{cout << "wrong" << endl;}
-	return edgeEncode;
+	cout << "edgeEncode: " << edgeEncode << endl;
+	return edgeEncode + cornerEncode; //I think this is wrong
 }
 
 void generateListTwo(){
