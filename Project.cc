@@ -585,11 +585,7 @@ int cube::phaseTwoEncode(){
 	//corner encoding
 	for(int i = 0; i < 7; i++){
 		c *= 3;
-		if(corner[1][i] == 1){
-			c++;
-		}else if(corner[1][i] == 2){
-			c += 2;
-		}
+		c += corner[1][i];
 		eighthCorner += corner[1][i];
 	}
 	eighthCorner = eighthCorner % 3;
