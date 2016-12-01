@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <fstream>
+#include <algorithm>
 using namespace std;
 
 class cube {
@@ -577,21 +578,54 @@ void generateListOne(){
 	}
 }
 
+int choose(int n,int k){
+	if(k == 0){ return 1;}
+	return ((n * choose(n - 1, k - 1)) / k);
+}
+
 int cube::phaseTwoEncode(){
 	int result = 0;
-	int c = 0;
+	int cornerEncode = 0;
 	int e = 0;
 	int eighthCorner=0;
 	//corner encoding
 	for(int i = 0; i < 7; i++){
-		c *= 3;
-		c += corner[1][i];
+		cornerEncode *= 3;
+		cornerEncode += corner[1][i];
 		eighthCorner += corner[1][i];
 	}
 	eighthCorner = eighthCorner % 3;
 
 	//edge encoding;
-	
+	int edgeEncode = 0;
+	vector<char> edgeIndex;
+	for(int i = 0; i > 11; i++){
+		switch(edge[0][i]){
+			case 4:
+				edgeIndex.push(i);
+				break;
+			case 5:
+				edgeIndex.push(i);
+				break;
+			case 6:
+				edgeIndex.push(i);
+				break;
+			case 7:
+				edgeIndex.push(i);
+				break;
+			default:
+				break;
+		}
+	}
+	edgeEncode += choose(edgeIndex.back(),4);
+	edgeIndex.pop();
+	edgeEncode += choose(edgeIndex.back(),3);
+	edgeIndex.pop();
+	edgeEncode += choose(edgeIndex.back(),2);
+	edgeIndex.pop();
+	edgeEncode += choose(edgeIndex.back(),1);
+	edgeIndex.pop();
+
 	return result;
 }
 
