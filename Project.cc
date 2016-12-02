@@ -629,7 +629,7 @@ int cube::phaseTwoEncode(){
 		edgeIndex.pop_back();
 	}else{cout << "wrong" << endl;}
 	cout << "edgeEncode: " << edgeEncode << endl;
-	return edgeEncode + cornerEncode; //I think this is wrong
+	return cornerEncode * 495 + edgeEncode;
 }
 
 void generateListTwo(){
