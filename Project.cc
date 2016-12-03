@@ -471,66 +471,7 @@ int cube::oppositeOf(int num){
 			return 29;
 	}
 }
-/*
-void generateList(){
-	int list[2048][7];
-	for(int i = 0; i < 2048;i++){
-		for (int j = 0; j < 7; j++)
-		{
-			list[i][j] = 33;
-		}
-	}
-	int count = 0;
-	for(int a = 0; a < 33; a++){
-		moveCaller(a);
-		for (int b = 0; b < 33; b++){
-			moveCaller(b);
-			for (int c = 0; c < 33; c++){
-				moveCaller(c);
-				for (int d = 0; d < 33; d++){
-					moveCaller(d);
-					for (int e = 0; e < 33; e++){
-						moveCaller(e);
-						for (int f = 0; f < 33; f++){
-							moveCaller(f);
-							for (int g = 0; g < 33; g++){
-								moveCaller(g);
-								int next = phaseOneEncode(edge);
-								if(list[next][0] == 33){
-									list[next][0] = a;
-									list[next][1] = b;
-									list[next][2] = c;
-									list[next][3] = d;
-									list[next][4] = e;
-									list[next][5] = f;
-									list[next][6] = g;
-									//cout << next << " " << a << " " << b << " " << c << " " << d << " " << e << " " << e << " " << f << " " << g << endl;
-									cout << "current num: " << count << endl;
-									count++;
-								}
-								oppositeOf(g);
-								
-							}
-							oppositeOf(f);
-						}
-						oppositeOf(e);
-					}
-					oppositeOf(d);
-				}
-				oppositeOf(c);
-			}
-			oppositeOf(b);
-		}
-		oppositeOf(a);
-	}
-	for (int i = 0; i < 2048; i++){
-		for (int j = 0; j < 7; j++){
-			cout << list[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
-*/
+
 void generateListOne(){
 	cube c;
 	cube current;
@@ -563,18 +504,6 @@ void generateListOne(){
 			current.moveCaller(current.oppositeOf(i));
 		}
 		cubes.pop();
-	}
-	ofstream fout("test.txt"); 
-	if(fout.is_open()){
-		int y;
-		for(y = 0; y < 2048; y++){
-			fout << "encode num: " << y << "     move to next:";
-			fout << " " << list[y][0];
-			fout << " destination: " << list[y][1];
-			fout << endl;
-		}
-	}else{
-		cout << "File could not be opened." << endl;
 	}
 }
 
@@ -633,7 +562,51 @@ int cube::phaseTwoEncode(){
 }
 
 void generateListTwo(){
-
+	//cannot use moves twistCW twistCCW slice antisliceCW antisliceCCW on red/orange
+	int list[2187][495];
+	int correctEdgePermutations[24][4];
+	int myints[] = {4,5,6,7};
+	int count = 0;
+	sort (myints,myints+4);
+	do {
+		cout << myints[0] << ' ' << myints[1] << ' ' << myints[2] << ' ' << myints[3] << '\n';
+		correctEdgePermutations[count][0] = myints[0];
+		correctEdgePermutations[count][1] = myints[1];
+		correctEdgePermutations[count][2] = myints[2];
+		correctEdgePermutations[count][3] = myints[3];
+	} while ( next_permutation(myints,myints+4) );
+	cube c;
+	cube current;
+	c.resetCube();
+	for(int i = 0; i < 2187; i++){
+		for(int j = 0; j < 495; j++){
+			list[i][j] = 33;
+		}
+	}
+	count = 0;
+	int prevEncoding = 0;
+	int encoding = 0;
+	queue <cube> cubes;
+	cubes.push(c); //the root cube
+	//while(count < 2048){
+	while(!cubes.empty()){
+		current = cubes.front();
+		cubes.pop();
+		for(int i = 0; i < 33; i++){
+			prevEncoding = current.phaseOneEncode();
+			current.moveCaller(i);
+			encoding = current.phaseOneEncode();
+			if(list[encoding][0] == 33){
+				cubes.push(current);
+				list[encoding][1] = prevEncoding;
+				list[encoding][0] = current.oppositeOf(i);
+				count++;
+				cout << "current encoded: " << count << endl;
+			}
+			current.moveCaller(current.oppositeOf(i));
+		}
+		cubes.pop();
+	}
 }
 
 int main (){
@@ -644,59 +617,12 @@ int main (){
 	//corner[0][0] is the corner in the first corner position
 	//corner[0][1] is the orientation of first corner
 	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
-
 	//generateListOne();
 	cube b;
 	b.resetCube();
 	int x = b.phaseTwoEncode();
-	cout << endl << "Phase 2: " << x << endl;
+	cout << endl << "Phase 2: " << x << endl; 
 
 
 	return 0;
 }
-
-
-/*
-	faces:
-	0:white
-	1:blue
-	2:red
-	3:green
-	4:orange
-	5:yellow
-
-	moves:
-	0:white cw
-	1:blue cw
-	2:red cw
-	3:green cw
-	4:orange cw
-	5:yellow cw
-	6:white ccw
-	7:blue ccw
-	8:red ccw
-	9:green ccw
-	10:orange ccw
-	11:yellow ccw
-	12:white half
-	13:blue half
-	14:red half
-	15:green half
-	16:orange half
-	17:yellow half
-	18:white slice
-	19:blue slice
-	20:red slice
-	21:green slice
-	22:orange slice
-	23:yellow slice
-	24:white/yellow halfslice
-	25:blue/green halfslice
-	26:red/orange halfslice
-	27:white/yellow antislice
-	28:blue/green antislice
-	29:red/orange antislice
-	30:white/yellow antislice ccw
-	31:blue/green antislice ccw
-	32:red/orange antislice ccw
-*/
