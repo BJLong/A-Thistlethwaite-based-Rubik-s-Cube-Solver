@@ -524,12 +524,12 @@ int cube::phaseTwoEncode(){
 		eighthCorner += corner[1][i];
 	}
 	eighthCorner = eighthCorner % 3;
-	cout << "cornerEncode: " << cornerEncode << endl;
+	// cout << "cornerEncode: " << cornerEncode << endl;
 
 	//edge encoding;
 	int edgeEncode = 0;
 	vector<char> edgeIndex;
-	for(int i = 0; i < 11; i++){
+	for(int i = 0; i < 12; i++){
 		switch(edge[0][i]){
 			case 4:
 				edgeIndex.push_back(i);
@@ -557,19 +557,19 @@ int cube::phaseTwoEncode(){
 		edgeEncode += choose(edgeIndex.back(),1);
 		edgeIndex.pop_back();
 	}else{cout << "wrong" << endl;}
-	cout << "edgeEncode: " << edgeEncode << endl;
+	// cout << "edgeEncode: " << edgeEncode << endl;
 	return cornerEncode * 495 + edgeEncode;
 }
-
+int listTwo[1082565][2];
 void generateListTwo(){
 	//cannot use moves twistCW twistCCW slice antisliceCW antisliceCCW on red/orange
-	int list[1082565][2];
+	// int listTwo[1082565][2];
 	cube c;
 	cube current;
 	c.resetCube();
 	for(int i = 0; i < 1082565; i++){
-		list[i][0] = 33;
-		list[i][1] = 33;
+		listTwo[i][0] = 33;
+		listTwo[i][1] = 33;
 	}
 	int count = 0;
 	int prevEncoding = 0;
@@ -584,10 +584,10 @@ void generateListTwo(){
 				prevEncoding = current.phaseTwoEncode();
 				current.moveCaller(i);
 				encoding = current.phaseTwoEncode();
-				if(list[encoding][0] == 33){
+				if(listTwo[encoding][0] == 33){
 					cubes.push(current);
-					list[encoding][1] = prevEncoding;
-					list[encoding][0] = current.oppositeOf(i);
+					listTwo[encoding][1] = prevEncoding;
+					listTwo[encoding][0] = current.oppositeOf(i);
 					count++;
 					cout << "current encoded: " << count << endl;
 				}
@@ -595,6 +595,18 @@ void generateListTwo(){
 			}
 		}
 		cubes.pop();
+	}
+	ofstream fout("phase2.txt"); 
+	if(fout.is_open()){
+		int y;
+		for(y = 0; y < 1082565; y++){
+			fout << "encode num: " << y << "     move to next:";
+			fout << " " << listTwo[y][0];
+			fout << " destination: " << listTwo[y][1];
+			fout << endl;
+		}
+	}else{
+		cout << "File could not be opened." << endl;
 	}
 }
 
