@@ -3,8 +3,8 @@
 #include <queue>
 #include <vector>
 #include <list>
-#include <stack>
 #include <fstream>
+#include <algorithm>
 using namespace std;
 
 class cube {
@@ -25,6 +25,7 @@ class cube {
 		void resetCube();
 		void moveCaller(int);
 		int oppositeOf(int);
+		int phaseTwoEncode();
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -470,66 +471,7 @@ int cube::oppositeOf(int num){
 			return 29;
 	}
 }
-/*
-void generateList(){
-	int list[2048][7];
-	for(int i = 0; i < 2048;i++){
-		for (int j = 0; j < 7; j++)
-		{
-			list[i][j] = 33;
-		}
-	}
-	int count = 0;
-	for(int a = 0; a < 33; a++){
-		moveCaller(a);
-		for (int b = 0; b < 33; b++){
-			moveCaller(b);
-			for (int c = 0; c < 33; c++){
-				moveCaller(c);
-				for (int d = 0; d < 33; d++){
-					moveCaller(d);
-					for (int e = 0; e < 33; e++){
-						moveCaller(e);
-						for (int f = 0; f < 33; f++){
-							moveCaller(f);
-							for (int g = 0; g < 33; g++){
-								moveCaller(g);
-								int next = phaseOneEncode(edge);
-								if(list[next][0] == 33){
-									list[next][0] = a;
-									list[next][1] = b;
-									list[next][2] = c;
-									list[next][3] = d;
-									list[next][4] = e;
-									list[next][5] = f;
-									list[next][6] = g;
-									//cout << next << " " << a << " " << b << " " << c << " " << d << " " << e << " " << e << " " << f << " " << g << endl;
-									cout << "current num: " << count << endl;
-									count++;
-								}
-								oppositeOf(g);
-								
-							}
-							oppositeOf(f);
-						}
-						oppositeOf(e);
-					}
-					oppositeOf(d);
-				}
-				oppositeOf(c);
-			}
-			oppositeOf(b);
-		}
-		oppositeOf(a);
-	}
-	for (int i = 0; i < 2048; i++){
-		for (int j = 0; j < 7; j++){
-			cout << list[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
-*/
+
 void generateListOne(){
 	cube c;
 	cube current;
@@ -563,13 +505,104 @@ void generateListOne(){
 		}
 		cubes.pop();
 	}
-	ofstream fout("test.txt"); 
+}
+
+int choose(int n,int k){
+	if(k == 0){ return 1;}
+	return ((n * choose(n - 1, k - 1)) / k);
+}
+
+int cube::phaseTwoEncode(){
+	int result = 0;
+	int cornerEncode = 0;
+	int e = 0;
+	int eighthCorner=0;
+	//corner encoding
+	for(int i = 0; i < 7; i++){
+		cornerEncode *= 3;
+		cornerEncode += corner[1][i];
+		eighthCorner += corner[1][i];
+	}
+	eighthCorner = eighthCorner % 3;
+	// cout << "cornerEncode: " << cornerEncode << endl;
+
+	//edge encoding;
+	int edgeEncode = 0;
+	vector<char> edgeIndex;
+	for(int i = 0; i < 12; i++){
+		switch(edge[0][i]){
+			case 4:
+				edgeIndex.push_back(i);
+				break;
+			case 5:
+				edgeIndex.push_back(i);
+				break;
+			case 6:
+				edgeIndex.push_back(i);
+				break;
+			case 7:
+				edgeIndex.push_back(i);
+				break;
+			default:
+				break;
+		}
+	}
+	if(!edgeIndex.empty()){
+		edgeEncode += choose(edgeIndex.back(),4);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),3);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),2);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),1);
+		edgeIndex.pop_back();
+	}else{cout << "wrong" << endl;}
+	// cout << "edgeEncode: " << edgeEncode << endl;
+	return cornerEncode * 495 + edgeEncode;
+}
+int listTwo[1082565][2];
+void generateListTwo(){
+	//cannot use moves twistCW twistCCW slice antisliceCW antisliceCCW on red/orange
+	// int listTwo[1082565][2];
+	cube c;
+	cube current;
+	c.resetCube();
+	for(int i = 0; i < 1082565; i++){
+		listTwo[i][0] = 33;
+		listTwo[i][1] = 33;
+	}
+	int count = 0;
+	int prevEncoding = 0;
+	int encoding = 0;
+	queue <cube> cubes;
+	cubes.push(c); //the root cube
+	while(!cubes.empty()){
+		current = cubes.front();
+		cubes.pop();
+		for(int i = 0; i < 33; i++){
+			if(i != 2 && i != 4 &&i != 8 && i != 10 && i != 20 && i != 22 && i != 29 && i != 32){
+				prevEncoding = current.phaseTwoEncode();
+				current.moveCaller(i);
+				encoding = current.phaseTwoEncode();
+				if(listTwo[encoding][0] == 33){
+					cubes.push(current);
+					listTwo[encoding][1] = prevEncoding;
+					listTwo[encoding][0] = current.oppositeOf(i);
+					count++;
+					cout << "current encoded: " << count << endl;
+				}
+				current.moveCaller(current.oppositeOf(i));
+			}
+		}
+		cubes.pop();
+	}
+	ofstream fout("phase2.txt"); 
 	if(fout.is_open()){
 		int y;
-		for(y = 0; y < 2048; y++){
+		for(y = 0; y < 1082565; y++){
 			fout << "encode num: " << y << "     move to next:";
-			fout << " " << list[y][0];
-			fout << " destination: " << list[y][1];
+			fout << " " << listTwo[y][0];
+			fout << " destination: " << listTwo[y][1];
 			fout << endl;
 		}
 	}else{
@@ -578,63 +611,15 @@ void generateListOne(){
 }
 
 int main (){
-	//edge orientation is either flipped [1] or not flipped [0]
-	//char edge[2][12];
-	//corner orientation goes 0,1,2
-	//char corner[2][8];
-	//corner[0][0] is the corner in the first corner position
-	//corner[0][1] is the orientation of first corner
-	//the correct value for the fifth corner would be corner[0][4] == 4 and corner[4][1] == 0
+	//generateListOne();
 
-	generateListOne();
-	
+	// cube b;
+	// b.resetCube();
+	// int x = b.phaseTwoEncode();
+	// cout << endl << "Phase 2: " << x << endl;
+
+	generateListTwo();
 
 
 	return 0;
 }
-
-
-/*
-	faces:
-	0:white
-	1:blue
-	2:red
-	3:green
-	4:orange
-	5:yellow
-
-	moves:
-	0:white cw
-	1:blue cw
-	2:red cw
-	3:green cw
-	4:orange cw
-	5:yellow cw
-	6:white ccw
-	7:blue ccw
-	8:red ccw
-	9:green ccw
-	10:orange ccw
-	11:yellow ccw
-	12:white half
-	13:blue half
-	14:red half
-	15:green half
-	16:orange half
-	17:yellow half
-	18:white slice
-	19:blue slice
-	20:red slice
-	21:green slice
-	22:orange slice
-	23:yellow slice
-	24:white/yellow halfslice
-	25:blue/green halfslice
-	26:red/orange halfslice
-	27:white/yellow antislice
-	28:blue/green antislice
-	29:red/orange antislice
-	30:white/yellow antislice ccw
-	31:blue/green antislice ccw
-	32:red/orange antislice ccw
-*/
