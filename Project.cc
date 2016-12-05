@@ -611,6 +611,18 @@ void generateListTwo(){
 	}
 }
 
+int inversion(int array, int i){
+	if(i > 0){
+		int num = 1;
+		for(int j = i-1; j >= 0; j--){
+			if(array[i] > array[j]){
+				num++;
+			}
+		}
+		return num * inversion(array, i - 1);
+	}
+}
+
 int main (){
 	//generateListOne();
 
@@ -621,6 +633,8 @@ int main (){
 
 	//generateListTwo();
 
+	//call by
+	//inversion(corners, corners.size() - 1);
 
 	return 0;
 }
