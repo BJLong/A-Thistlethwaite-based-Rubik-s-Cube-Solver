@@ -560,10 +560,11 @@ int cube::phaseTwoEncode(){
 	// cout << "edgeEncode: " << edgeEncode << endl;
 	return cornerEncode * 495 + edgeEncode;
 }
-int listTwo[1082565][2];
+
+int listTwo[1082565][2]; //needed to be a global because of size
+
 void generateListTwo(){
 	//cannot use moves twistCW twistCCW slice antisliceCW antisliceCCW on red/orange
-	// int listTwo[1082565][2];
 	cube c;
 	cube current;
 	c.resetCube();
@@ -618,7 +619,7 @@ int main (){
 	// int x = b.phaseTwoEncode();
 	// cout << endl << "Phase 2: " << x << endl;
 
-	generateListTwo();
+	//generateListTwo();
 
 
 	return 0;
