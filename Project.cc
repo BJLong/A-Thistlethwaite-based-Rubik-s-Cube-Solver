@@ -27,6 +27,8 @@ class cube {
 		int oppositeOf(int);
 		int phaseTwoEncode();
 		int phaseThreeCornerEncoding(int);
+		int phaseThreeEdgeEncoding();
+		int phaseThreeEncoding();
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -628,14 +630,31 @@ int cube::phaseThreeCornerEncoding(int i){
 		int num = 0;
 		for(int j = i-1; j >= 0; j--){
 			if(corner[0][i] < corner[0][j]){
-				cout << "corner[0][i]: " << corner[0][i] << "corner[0][j]: " << corner[0][j] << endl;
+				// cout << "corner[0][i]: " << corner[0][i] << "corner[0][j]: " << corner[0][j] << endl;
 				num++;
 			}
 		}
 		int x = num * factorial(num);
-		cout << "num: " << x << endl;
+		// cout << "num: " << x << endl;
 		return (x + phaseThreeCornerEncoding(i - 1));
 	}else {return 0;}
+}
+
+int cube::phaseThreeEdgeEncoding(){
+	int num = 0;
+	int temp = 0;
+	for(int i = 0; i < 4; i++){
+		temp = temp << 1;
+		if(edge[1][i] == 1){
+			temp++;
+		}
+	}
+	num += temp;
+	return num;
+}
+
+int cube::phaseThreeEncoding(){
+	return this->phaseThreeEdgeEncoding() * this->phaseThreeCornerEncoding(7);
 }
 
 int main (){
@@ -644,7 +663,9 @@ int main (){
 
 	cube b;
 	b.resetCube();
-	cout << b.phaseThreeCornerEncoding(7) << endl;
-
+	// b.moveCaller(4);
+	cout << "Edge encoding: " << b.phaseThreeEdgeEncoding() << endl;
+	cout << "Corner encoding: " << b.phaseThreeCornerEncoding(7) << endl;
+	cout << "Phase 3 encoding: " << b.phaseThreeEncoding() << endl;
 	return 0;
 }
