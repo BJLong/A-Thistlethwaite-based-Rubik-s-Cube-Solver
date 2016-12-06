@@ -26,6 +26,7 @@ class cube {
 		void moveCaller(int);
 		int oppositeOf(int);
 		int phaseTwoEncode();
+		int phaseThreeCornerEncoding(int);
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -611,30 +612,39 @@ void generateListTwo(){
 	}
 }
 
-int inversion(int array, int i){
+int factorial(int n){
+	if(n == 0){
+		return 0;
+	}
+	if (n == 1){
+		return 1;
+	}else{
+		return n * factorial(n-1);
+	}
+}
+
+int cube::phaseThreeCornerEncoding(int i){
 	if(i > 0){
-		int num = 1;
+		int num = 0;
 		for(int j = i-1; j >= 0; j--){
-			if(array[i] > array[j]){
+			if(corner[0][i] < corner[0][j]){
+				cout << "corner[0][i]: " << corner[0][i] << "corner[0][j]: " << corner[0][j] << endl;
 				num++;
 			}
 		}
-		return num * inversion(array, i - 1);
-	}
+		int x = num * factorial(num);
+		cout << "num: " << x << endl;
+		return (x + phaseThreeCornerEncoding(i - 1));
+	}else {return 0;}
 }
 
 int main (){
 	//generateListOne();
-
-	// cube b;
-	// b.resetCube();
-	// int x = b.phaseTwoEncode();
-	// cout << endl << "Phase 2: " << x << endl;
-
 	//generateListTwo();
 
-	//call by
-	//inversion(corners, corners.size() - 1);
+	cube b;
+	b.resetCube();
+	cout << b.phaseThreeCornerEncoding(7) << endl;
 
 	return 0;
 }
