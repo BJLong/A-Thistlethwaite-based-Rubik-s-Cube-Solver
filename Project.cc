@@ -512,6 +512,7 @@ void generateListOne(){
 
 int choose(int n,int k){
 	if(k == 0){ return 1;}
+	if(n == 0){ return 0;}
 	return ((n * choose(n - 1, k - 1)) / k);
 }
 
@@ -649,6 +650,8 @@ int badEdge(int x){
 int cube::phaseThreeEdgeEncoding(){
 	int edgeEncode = 0;
 	vector<char> edgeIndex;
+	vector<int> whiteRed;
+	vector<int> yellowGreen;
 	int badEdges = 0;
 	int x[4] = {-1,-1,-1,-1};
 	//grab edges in positions 1,3,8,10
@@ -659,9 +662,31 @@ int cube::phaseThreeEdgeEncoding(){
 	for(int i = 0; i < 4; i++){
 		if(x[i] == 0 || x[i] == 2 || x[i] == 9 || x[i] == 11){
 			badEdges++;
-			edgeIndex.push_back(x[i]);
-		}
+			whiteRed.push_back(1);
+		}else{ whiteRed.push_back(0); }
 	}
+
+	x[0] = edge[0][0];
+	x[1] = edge[0][2];
+	x[2] = edge[0][9];
+	x[3] = edge[0][11];
+	for(int i = 0; i < 4; i++){
+		if(x[i] == 1 || x[i] == 3 || x[i] == 8 || x[i] == 10){
+			yellowGreen.push_back(1);
+		}else{ yellowGreen.push_back(0); }
+	}
+
+	if(!yellowGreen.empty()){
+		edgeEncode += choose(edgeIndex.back(),4);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),3);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),2);
+		edgeIndex.pop_back();
+		edgeEncode += choose(edgeIndex.back(),1);
+		edgeIndex.pop_back();
+	}else{cout << "wrong" << endl;}	
+
 }
 
 int cube::phaseThreeEncoding(){
