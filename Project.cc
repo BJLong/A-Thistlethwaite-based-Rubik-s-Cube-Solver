@@ -640,17 +640,28 @@ int cube::phaseThreeCornerEncoding(int i){
 	}else {return 0;}
 }
 
+int badEdge(int x){
+	if(x == 0 || x ++ 2 || x == 9 || x == 11){
+
+	}
+}
+
 int cube::phaseThreeEdgeEncoding(){
-	int num = 0;
-	int temp = 0;
+	int edgeEncode = 0;
+	vector<char> edgeIndex;
+	int badEdges = 0;
+	int x[4] = {-1,-1,-1,-1};
+	//grab edges in positions 1,3,8,10
+	x[0] = edge[0][1];
+	x[1] = edge[0][3];
+	x[2] = edge[0][8];
+	x[3] = edge[0][10];
 	for(int i = 0; i < 4; i++){
-		temp = temp << 1;
-		if(edge[1][i] == 1){
-			temp++;
+		if(x[i] == 0 || x[i] == 2 || x[i] == 9 || x[i] == 11){
+			badEdges++;
+			edgeIndex.push_back(x[i]);
 		}
 	}
-	num += temp;
-	return num;
 }
 
 int cube::phaseThreeEncoding(){
