@@ -649,6 +649,8 @@ int badEdge(int x){
 
 int cube::phaseThreeEdgeEncoding(){
 	int edgeEncode = 0;
+	int whiteRedEncode = 0;
+	int yellowGreenEncode = 0;
 	vector<char> edgeIndex;
 	vector<int> whiteRed;
 	vector<int> yellowGreen;
@@ -676,13 +678,18 @@ int cube::phaseThreeEdgeEncoding(){
 		}else{ yellowGreen.push_back(0); }
 	}
 	if(badEdges == 4){
-		return edgeEncode = 69;
+		return 69;
+	}else if(badEdges == 0){
+		return 0;
 	}else{
 		for(int i = badEdges; i > 0; i--){
-			edgeEncode += choose(edgeIndex.back(),i);
-			edgeIndex.pop_back();
+			whiteRedEncode += choose(whiteRed.back(),i);
+			whiteRed.pop_back();
+			yellowGreenEncode += choose(yellowGreen.back(),i);
+			yellowGreen.pop_back();
 		}
 	}
+	return edgeEncode;
 }
 
 int cube::phaseThreeEncoding(){
