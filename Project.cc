@@ -667,7 +667,7 @@ int cube::phaseThreeEdgeEncoding(){
 			whiteRed.push_back(1);
 		}else{ whiteRed.push_back(0); }
 	}
-
+	//grab edges in positions 0,2,9,11
 	x[0] = edge[0][0];
 	x[1] = edge[0][2];
 	x[2] = edge[0][9];
@@ -677,19 +677,52 @@ int cube::phaseThreeEdgeEncoding(){
 			yellowGreen.push_back(1);
 		}else{ yellowGreen.push_back(0); }
 	}
+
 	if(badEdges == 4){
 		return 69;
 	}else if(badEdges == 0){
 		return 0;
-	}else{
-		for(int i = badEdges; i > 0; i--){
-			whiteRedEncode += choose(whiteRed.back(),i);
-			whiteRed.pop_back();
-			yellowGreenEncode += choose(yellowGreen.back(),i);
-			yellowGreen.pop_back();
-		}
+	}else if(badEdges == 1){
+		whiteRedEncode += choose(whiteRed.back(),1);
+		whiteRed.pop_back();
+		yellowGreenEncode += choose(yellowGreen.back(),1);
+		yellowGreen.pop_back();
+		return whiteRedEncode + yellowGreenEncode + fudge;
+	}else if(badEdges == 2){
+		whiteRedEncode += choose(whiteRed.back(),2);
+		whiteRed.pop_back();
+		yellowGreenEncode += choose(yellowGreen.back(),2);
+		yellowGreen.pop_back();
+		whiteRedEncode += choose(whiteRed.back(),1);
+		whiteRed.pop_back();
+		yellowGreenEncode += choose(yellowGreen.back(),1);
+		yellowGreen.pop_back();
+		return whiteRedEncode + yellowGreenEncode + fudge;
+	}else if(badEdges == 3){
+		whiteRedEncode += choose(whiteRed.back(),3);
+		whiteRed.pop_back();
+		yellowGreenEncode += choose(yellowGreen.back(),3);
+		yellowGreen.pop_back();
+		whiteRedEncode += choose(whiteRed.back(),2);
+		whiteRed.pop_back();
+		yellowGreenEncode += choose(yellowGreen.back(),2);
+		yellowGreen.pop_back();
+		whiteRedEncode += choose(whiteRed.back(),1);
+		whiteRed.pop_back();
+		yellowGreenEncode += choose(yellowGreen.back(),1);
+		yellowGreen.pop_back();
+		return whiteRedEncode + yellowGreenEncode + fudge;
 	}
-	return edgeEncode;
+
+	// else{
+	// 	for(int i = badEdges; i > 0; i--){
+	// 		whiteRedEncode += choose(whiteRed.back(),i);
+	// 		whiteRed.pop_back();
+	// 		yellowGreenEncode += choose(yellowGreen.back(),i);
+	// 		yellowGreen.pop_back();
+	// 	}
+	// }
+	// return edgeEncode;
 }
 
 int cube::phaseThreeEncoding(){
