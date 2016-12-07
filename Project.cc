@@ -675,18 +675,14 @@ int cube::phaseThreeEdgeEncoding(){
 			yellowGreen.push_back(1);
 		}else{ yellowGreen.push_back(0); }
 	}
-
-	if(!yellowGreen.empty()){
-		edgeEncode += choose(edgeIndex.back(),4);
-		edgeIndex.pop_back();
-		edgeEncode += choose(edgeIndex.back(),3);
-		edgeIndex.pop_back();
-		edgeEncode += choose(edgeIndex.back(),2);
-		edgeIndex.pop_back();
-		edgeEncode += choose(edgeIndex.back(),1);
-		edgeIndex.pop_back();
-	}else{cout << "wrong" << endl;}	
-
+	if(badEdges == 4){
+		return edgeEncode = 69;
+	}else{
+		for(int i = badEdges; i > 0; i--){
+			edgeEncode += choose(edgeIndex.back(),i);
+			edgeIndex.pop_back();
+		}
+	}
 }
 
 int cube::phaseThreeEncoding(){
