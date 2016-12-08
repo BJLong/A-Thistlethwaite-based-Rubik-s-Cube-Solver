@@ -506,7 +506,6 @@ void generateListOne(){
 			}
 			current.moveCaller(current.oppositeOf(i));
 		}
-		cubes.pop();
 	}
 }
 
@@ -599,7 +598,6 @@ void generateListTwo(){
 				current.moveCaller(current.oppositeOf(i));
 			}
 		}
-		cubes.pop();
 	}
 	ofstream fout("phase2.txt"); 
 	if(fout.is_open()){
@@ -634,7 +632,7 @@ int cube::phaseThreeCornerEncoding(int i){
 				num++;
 			}
 		}
-		int x = num * factorial(num);
+		int x = num * factorial(i);
 		// cout << "num: " << x << endl;
 		return (x + phaseThreeCornerEncoding(i - 1));
 	}else {return 0;}
@@ -741,12 +739,11 @@ void generateListThree(){
 					listThree[encoding][1] = prevEncoding;
 					listThree[encoding][0] = current.oppositeOf(i);
 					count++;
-					cout << "current encoded: " << count << endl;
 				}
 				current.moveCaller(current.oppositeOf(i));
 			}
 		}
-		cubes.pop();
+		cout << "current encoded: " << count << endl;
 	}
 	ofstream fout("phase3.txt"); 
 	if(fout.is_open()){
