@@ -687,7 +687,7 @@ int cube::phaseThreeEdgeEncoding(){
 		whiteRed.pop_back();
 		yellowGreenEncode += choose(yellowGreen.back(),1);
 		yellowGreen.pop_back();
-		return whiteRedEncode + yellowGreenEncode + fudge;
+		return whiteRedEncode * 4 + yellowGreenEncode + 1;
 	}else if(badEdges == 2){
 		whiteRedEncode += choose(whiteRed.back(),2);
 		whiteRed.pop_back();
@@ -697,7 +697,7 @@ int cube::phaseThreeEdgeEncoding(){
 		whiteRed.pop_back();
 		yellowGreenEncode += choose(yellowGreen.back(),1);
 		yellowGreen.pop_back();
-		return whiteRedEncode + yellowGreenEncode + fudge;
+		return whiteRedEncode * 6 + yellowGreenEncode + 17;
 	}else if(badEdges == 3){
 		whiteRedEncode += choose(whiteRed.back(),3);
 		whiteRed.pop_back();
@@ -711,7 +711,7 @@ int cube::phaseThreeEdgeEncoding(){
 		whiteRed.pop_back();
 		yellowGreenEncode += choose(yellowGreen.back(),1);
 		yellowGreen.pop_back();
-		return whiteRedEncode + yellowGreenEncode + fudge;
+		return whiteRedEncode * 4 + yellowGreenEncode + 53;
 	}
 
 	// else{
