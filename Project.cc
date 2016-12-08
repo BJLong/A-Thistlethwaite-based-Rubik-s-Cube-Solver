@@ -26,7 +26,7 @@ class cube {
 		void moveCaller(int);
 		int oppositeOf(int);
 		int phaseTwoEncode();
-		int phaseThreeCornerEncoding(int);
+		int phaseThreeCornerEncoding(int, int[]);
 		int phaseThreeEdgeEncoding();
 		int phaseThreeEncoding();
 		int phaseFourCornerEncoding();
@@ -635,17 +635,17 @@ int factorial(int n){
 	}
 }
 
-int cube::phaseThreeCornerEncoding(int i){
+int cube::phaseThreeCornerEncoding(int i, int array[]){
 	if(i > 0){
 		int num = 0;
 		for(int j = i-1; j >= 0; j--){
-			if(corner[0][i] < corner[0][j]){
+			if(array[i] < array[j]){
 				num++;
 			}
 		}
 		int x = num * factorial(i);
 		// cout << "num: " << x << endl;
-		return (x + phaseThreeCornerEncoding(i - 1));
+		return (x + phaseThreeCornerEncoding(i - 1, array));
 	}else {return 0;}
 }
 
@@ -718,7 +718,11 @@ int cube::phaseThreeEdgeEncoding(){
 }
 
 int cube::phaseThreeEncoding(){
-	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7) * 70);
+	int cornerArray[8];
+	for(int i = 0; i < 8; i++){
+		cornerArray[i] = corner[0][i];
+	}
+	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7, cornerArray) * 70);
 }
 
 int listThree[2822400][2];
@@ -774,36 +778,13 @@ int cube::phaseFourCornerEncoding(){
 	int even[4];
 	int odd = -1;
 	int evenEncoding = 0;
-	vector<char> evenIndex;
-	for(int i = 0; i < 8; i++){
-		switch(corner[0][i]){
-			case 0:
-				evenIndex.push_back(i);
-				break;
-			case 2:
-				evenIndex.push_back(i);
-				break;
-			case 4:
-				evenIndex.push_back(i);
-				break;
-			case 6:
-				evenIndex.push_back(i);
-				break;
-			default:
-				break;
-		}
-	}
-	if(!evenIndex.empty()){
-		evenEncoding += choose(evenIndex.back(),4);
-		evenIndex.pop_back();
-		evenEncoding += choose(evenIndex.back(),3);
-		evenIndex.pop_back();
-		evenEncoding += choose(evenIndex.back(),2);
-		evenIndex.pop_back();
-		evenEncoding += choose(evenIndex.back(),1);
-		evenIndex.pop_back();
-	}else{cout << "wrong" << endl;}
-	
+	//pull even numbers
+	even[0] = corner[0][0];
+	even[1] = corner[0][2];
+	even[2] = corner[0][4];
+	even[3] = corner[0][6];
+
+	evenEncoding = phaseThreeCornerEncoding(4, even);
 	//odd encoding
 	odd = corner[0][1];
 	odd = (odd - 1) / 2;
