@@ -641,12 +641,6 @@ int cube::phaseThreeCornerEncoding(int i){
 	}else {return 0;}
 }
 
-int badEdge(int x){
-	if(x == 0 || x ++ 2 || x == 9 || x == 11){
-
-	}
-}
-
 int cube::phaseThreeEdgeEncoding(){
 	int edgeEncode = 0;
 	int whiteRedEncode = 0;
@@ -728,6 +722,55 @@ int cube::phaseThreeEdgeEncoding(){
 int cube::phaseThreeEncoding(){
 	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7) * 70);
 }
+int listThree[2822400][2];
+
+void generateListThree(){
+	//cannot use moves twistCW twistCCW slice antisliceCW antisliceCCW on red/orange/blue/green
+	cube c;
+	cube current;
+	c.resetCube();
+	for(int i = 0; i < 2822400; i++){
+		listThree[i][0] = 33;
+		listThree[i][1] = 33;
+	}
+	int count = 0;
+	int prevEncoding = 0;
+	int encoding = 0;
+	queue <cube> cubes;
+	cubes.push(c); //the root cube
+	while(!cubes.empty()){
+		current = cubes.front();
+		cubes.pop();
+		for(int i = 0; i < 33; i++){
+			if(i != 2 && i != 4 &&i != 8 && i != 10 && i != 20 && i != 22 && i != 29 && i != 32 && i != 1 && i != 3 &&i != 7 && i != 9 && i != 19 && i != 21 && i != 18 && i != 31){
+				prevEncoding = current.phaseThreeEncoding();
+				current.moveCaller(i);
+				encoding = current.phaseThreeEncoding();
+				if(listThree[encoding][0] == 33){
+					cubes.push(current);
+					listThree[encoding][1] = prevEncoding;
+					listThree[encoding][0] = current.oppositeOf(i);
+					count++;
+					cout << "current encoded: " << count << endl;
+				}
+				current.moveCaller(current.oppositeOf(i));
+			}
+		}
+		cubes.pop();
+	}
+	// ofstream fout("phase3.txt"); 
+	// if(fout.is_open()){
+	// 	int y;
+	// 	for(y = 0; y < 2822400; y++){
+	// 		fout << "e: " << y << " - m:";
+	// 		fout << " " << listThree[y][0];
+	// 		fout << " d: " << listThree[y][1];
+	// 		fout << endl;
+	// 	}
+	// }else{
+	// 	cout << "File could not be opened." << endl;
+	// }
+}
 
 int main (){
 	//generateListOne();
@@ -739,5 +782,6 @@ int main (){
 	cout << "Edge encoding: " << b.phaseThreeEdgeEncoding() << endl;
 	cout << "Corner encoding: " << b.phaseThreeCornerEncoding(7) << endl;
 	cout << "Phase 3 encoding: " << b.phaseThreeEncoding() << endl;
+	generateListThree();
 	return 0;
 }
