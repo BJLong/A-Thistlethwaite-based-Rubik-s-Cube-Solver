@@ -774,18 +774,43 @@ int cube::phaseFourCornerEncoding(){
 	int even[4];
 	int odd = -1;
 	int evenEncoding = 0;
-	int oddEncoding = 0;
-	//pull even numbers
-	even[0] = corner[0][0];
-	even[1] = corner[0][2];
-	even[2] = corner[0][4];
-	even[3] = corner[0][6];
-	for(int i = 0; i < 4; i++){
-		evenEncoding += (even[i] /2) * i;
+	vector<char> evenIndex;
+	for(int i = 0; i < 8; i++){
+		switch(corner[0][i]){
+			case 0:
+				evenIndex.push_back(i);
+				break;
+			case 2:
+				evenIndex.push_back(i);
+				break;
+			case 4:
+				evenIndex.push_back(i);
+				break;
+			case 6:
+				evenIndex.push_back(i);
+				break;
+			default:
+				break;
+		}
 	}
+	if(!evenIndex.empty()){
+		evenEncoding += choose(evenIndex.back(),4);
+		evenIndex.pop_back();
+		evenEncoding += choose(evenIndex.back(),3);
+		evenIndex.pop_back();
+		evenEncoding += choose(evenIndex.back(),2);
+		evenIndex.pop_back();
+		evenEncoding += choose(evenIndex.back(),1);
+		evenIndex.pop_back();
+	}else{cout << "wrong" << endl;}
+	
+	//odd encoding
+	odd = corner[0][1];
+	odd = (odd - 1) / 2;
 
-
-	return even * 4 + odd;
+	cout << "evenEncoding: " << evenEncoding << endl;
+	cout << "odd: " << odd << endl;
+	return evenEncoding * 4 + odd;
 }
 
 int cube::phaseFourEdgeEncoding(int i){
@@ -807,5 +832,6 @@ int main (){
 	//generateListOne();
 	//generateListTwo();
 	//generateListThree();
+	cout << "total: " << b.phaseFourCornerEncoding() << endl;
 	return 0;
 }
