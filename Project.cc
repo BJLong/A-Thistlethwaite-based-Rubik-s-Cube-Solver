@@ -768,8 +768,8 @@ void generateListThree(){
 int main (){
 	cube b;
 	b.resetCube();
-	generateListOne();
-	generateListTwo();
+	//generateListOne();
+	//generateListTwo();
 	//generateListThree();
 	return 0;
 }
