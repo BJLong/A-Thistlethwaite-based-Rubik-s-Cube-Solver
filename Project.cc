@@ -644,7 +644,7 @@ int cube::phaseThreeCornerEncoding(int i, int array[]){
 			}
 		}
 		int x = num * factorial(i);
-		// cout << "num: " << x << endl;
+		cout << "num: " << x << endl;
 		return (x + phaseThreeCornerEncoding(i - 1, array));
 	}else {return 0;}
 }
@@ -784,7 +784,7 @@ int cube::phaseFourCornerEncoding(){
 	even[2] = corner[0][4];
 	even[3] = corner[0][6];
 
-	evenEncoding = phaseThreeCornerEncoding(4, even);
+	evenEncoding = phaseThreeCornerEncoding(3, even);
 	//odd encoding
 	odd = corner[0][1];
 	odd = (odd - 1) / 2;
@@ -813,6 +813,7 @@ int main (){
 	//generateListOne();
 	//generateListTwo();
 	//generateListThree();
+	cout << "total: " << b.phaseFourCornerEncoding() << endl;
 	cout << "total: " << b.phaseFourCornerEncoding() << endl;
 	return 0;
 }
