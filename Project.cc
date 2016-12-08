@@ -819,7 +819,7 @@ int cube::phaseFourEdgeEncoding(){
 }
 
 int cube::phaseFourEncoding(){
-	return this->phaseFourEdgeEncoding() * 96 + this->phaseFourCornerEncoding();
+	return this->phaseFourEdgeEncoding() + this->phaseFourCornerEncoding() * 6912;
 }
 
 void generateListFour(){
@@ -857,10 +857,12 @@ void generateListFour(){
 	if(fout.is_open()){
 		int y;
 		for(y = 0; y < 663552; y++){
-			fout << "e: " << y << " - m:";
-			fout << " " << listFour[y][0];
-			fout << " d: " << listFour[y][1];
-			fout << endl;
+			if(listFour[y][0] != 33){
+				fout << "e: " << y << " - m:";
+				fout << " " << listFour[y][0];
+				fout << " d: " << listFour[y][1];
+				fout << endl;
+			}
 		}
 	}else{
 		cout << "File could not be opened." << endl;
@@ -875,6 +877,5 @@ int main (){
 	//generateListTwo();
 	//generateListThree();
 	generateListFour();
-	cout << "total: " << b.phaseFourEncoding() << endl;
 	return 0;
 }
