@@ -771,16 +771,25 @@ void generateListThree(){
 int listFour[663552][2];
 
 int cube::phaseFourCornerEncoding(){
-	int even = 0;
-	int odd = 0;
-
+	int even[4];
+	int odd = -1;
+	int evenEncoding = 0;
+	int oddEncoding = 0;
+	//pull even numbers
+	even[0] = corner[0][0];
+	even[1] = corner[0][2];
+	even[2] = corner[0][4];
+	even[3] = corner[0][6];
+	for(int i = 0; i < 4; i++){
+		evenEncoding += (even[i] /2) * i;
+	}
 
 
 	return even * 4 + odd;
 }
 
 int cube::phaseFourEdgeEncoding(int i){
-	
+
 }
 
 int cube::phaseFourEncoding(){
