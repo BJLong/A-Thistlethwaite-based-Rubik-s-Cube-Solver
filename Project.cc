@@ -36,7 +36,7 @@ const char cube::edgeMoves[6][4] = {
 	{0,4,11,5},
 	{1,5,10,6},
 	{2,6,9,7},
-	{3,7,8,0},
+	{3,7,8,4},
 	{8,9,10,11}
 };
 const char cube::cornerMoves[6][4] = {
@@ -631,7 +631,6 @@ int cube::phaseThreeCornerEncoding(int i){
 		int num = 0;
 		for(int j = i-1; j >= 0; j--){
 			if(corner[0][i] < corner[0][j]){
-				// cout << "corner[0][i]: " << corner[0][i] << "corner[0][j]: " << corner[0][j] << endl;
 				num++;
 			}
 		}
@@ -707,21 +706,12 @@ int cube::phaseThreeEdgeEncoding(){
 		yellowGreen.pop_back();
 		return whiteRedEncode * 4 + yellowGreenEncode + 53;
 	}
-
-	// else{
-	// 	for(int i = badEdges; i > 0; i--){
-	// 		whiteRedEncode += choose(whiteRed.back(),i);
-	// 		whiteRed.pop_back();
-	// 		yellowGreenEncode += choose(yellowGreen.back(),i);
-	// 		yellowGreen.pop_back();
-	// 	}
-	// }
-	// return edgeEncode;
 }
 
 int cube::phaseThreeEncoding(){
 	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7) * 70);
 }
+
 int listThree[2822400][2];
 
 void generateListThree(){
@@ -742,7 +732,7 @@ void generateListThree(){
 		current = cubes.front();
 		cubes.pop();
 		for(int i = 0; i < 33; i++){
-			if(i != 2 && i != 4 &&i != 8 && i != 10 && i != 20 && i != 22 && i != 29 && i != 32 && i != 1 && i != 3 &&i != 7 && i != 9 && i != 19 && i != 21 && i != 18 && i != 31){
+			if(i != 2 && i != 4 && i != 8 && i != 10 && i != 20 && i != 22 && i != 29 && i != 32 && i != 1 && i != 3 &&i != 7 && i != 9 && i != 19 && i != 21 && i != 28 && i != 31){
 				prevEncoding = current.phaseThreeEncoding();
 				current.moveCaller(i);
 				encoding = current.phaseThreeEncoding();
@@ -758,18 +748,18 @@ void generateListThree(){
 		}
 		cubes.pop();
 	}
-	// ofstream fout("phase3.txt"); 
-	// if(fout.is_open()){
-	// 	int y;
-	// 	for(y = 0; y < 2822400; y++){
-	// 		fout << "e: " << y << " - m:";
-	// 		fout << " " << listThree[y][0];
-	// 		fout << " d: " << listThree[y][1];
-	// 		fout << endl;
-	// 	}
-	// }else{
-	// 	cout << "File could not be opened." << endl;
-	// }
+	ofstream fout("phase3.txt"); 
+	if(fout.is_open()){
+		int y;
+		for(y = 0; y < 2822400; y++){
+			fout << "e: " << y << " - m:";
+			fout << " " << listThree[y][0];
+			fout << " d: " << listThree[y][1];
+			fout << endl;
+		}
+	}else{
+		cout << "File could not be opened." << endl;
+	}
 }
 
 int main (){
