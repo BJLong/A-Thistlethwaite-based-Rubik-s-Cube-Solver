@@ -484,7 +484,6 @@ void generateListOne(){
 		list[i][0] = 33;
 		list[i][1] = 33;
 	}
-	int count = 0;
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
@@ -501,11 +500,21 @@ void generateListOne(){
 				cubes.push(current);
 				list[encoding][1] = prevEncoding;
 				list[encoding][0] = current.oppositeOf(i);
-				count++;
-				cout << "current encoded: " << count << endl;
 			}
 			current.moveCaller(current.oppositeOf(i));
 		}
+	}
+	ofstream fout("phase1.txt"); 
+	if(fout.is_open()){
+		int y;
+		for(y = 0; y < 2048; y++){
+			fout << "e: " << y << " - m:";
+			fout << " " << list[y][0];
+			fout << " d: " << list[y][1];
+			fout << endl;
+		}
+	}else{
+		cout << "File could not be opened." << endl;
 	}
 }
 
@@ -575,7 +584,6 @@ void generateListTwo(){
 		listTwo[i][0] = 33;
 		listTwo[i][1] = 33;
 	}
-	int count = 0;
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
@@ -592,8 +600,6 @@ void generateListTwo(){
 					cubes.push(current);
 					listTwo[encoding][1] = prevEncoding;
 					listTwo[encoding][0] = current.oppositeOf(i);
-					count++;
-					cout << "current encoded: " << count << endl;
 				}
 				current.moveCaller(current.oppositeOf(i));
 			}
@@ -603,9 +609,9 @@ void generateListTwo(){
 	if(fout.is_open()){
 		int y;
 		for(y = 0; y < 1082565; y++){
-			fout << "encode num: " << y << "     move to next:";
+			fout << "e: " << y << " - m:";
 			fout << " " << listTwo[y][0];
-			fout << " destination: " << listTwo[y][1];
+			fout << " d: " << listTwo[y][1];
 			fout << endl;
 		}
 	}else{
@@ -721,7 +727,6 @@ void generateListThree(){
 		listThree[i][0] = 33;
 		listThree[i][1] = 33;
 	}
-	int count = 0;
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
@@ -738,12 +743,10 @@ void generateListThree(){
 					cubes.push(current);
 					listThree[encoding][1] = prevEncoding;
 					listThree[encoding][0] = current.oppositeOf(i);
-					count++;
 				}
 				current.moveCaller(current.oppositeOf(i));
 			}
 		}
-		cout << "current encoded: " << count << endl;
 	}
 	ofstream fout("phase3.txt"); 
 	if(fout.is_open()){
@@ -760,15 +763,10 @@ void generateListThree(){
 }
 
 int main (){
-	//generateListOne();
-	//generateListTwo();
-
 	cube b;
 	b.resetCube();
-	// b.moveCaller(4);
-	cout << "Edge encoding: " << b.phaseThreeEdgeEncoding() << endl;
-	cout << "Corner encoding: " << b.phaseThreeCornerEncoding(7) << endl;
-	cout << "Phase 3 encoding: " << b.phaseThreeEncoding() << endl;
-	generateListThree();
+	generateListOne();
+	generateListTwo();
+	//generateListThree();
 	return 0;
 }
