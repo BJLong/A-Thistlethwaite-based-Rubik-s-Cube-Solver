@@ -29,6 +29,9 @@ class cube {
 		int phaseThreeCornerEncoding(int);
 		int phaseThreeEdgeEncoding();
 		int phaseThreeEncoding();
+		int phaseFourCornerEncoding();
+		int phaseFourEdgeEncoding(int);
+		int phaseFourEncoding();
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -764,6 +767,30 @@ void generateListThree(){
 		cout << "File could not be opened." << endl;
 	}
 }
+
+int listFour[663552][2];
+
+int cube::phaseFourCornerEncoding(){
+	int even = 0;
+	int odd = 0;
+
+
+
+	return even * 4 + odd;
+}
+
+int cube::phaseFourEdgeEncoding(int i){
+	
+}
+
+int cube::phaseFourEncoding(){
+
+}
+
+void generateListFour(){
+
+}
+
 
 int main (){
 	cube b;
