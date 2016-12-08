@@ -664,8 +664,8 @@ int cube::phaseThreeEdgeEncoding(){
 	for(int i = 0; i < 4; i++){
 		if(x[i] == 0 || x[i] == 2 || x[i] == 9 || x[i] == 11){
 			badEdges++;
-			whiteRed.push_back(1);
-		}else{ whiteRed.push_back(0); }
+			whiteRed.push_back(i);
+		}
 	}
 	//grab edges in positions 0,2,9,11
 	x[0] = edge[0][0];
@@ -674,8 +674,8 @@ int cube::phaseThreeEdgeEncoding(){
 	x[3] = edge[0][11];
 	for(int i = 0; i < 4; i++){
 		if(x[i] == 1 || x[i] == 3 || x[i] == 8 || x[i] == 10){
-			yellowGreen.push_back(1);
-		}else{ yellowGreen.push_back(0); }
+			yellowGreen.push_back(i);
+		}
 	}
 
 	if(badEdges == 4){
@@ -726,7 +726,7 @@ int cube::phaseThreeEdgeEncoding(){
 }
 
 int cube::phaseThreeEncoding(){
-	return this->phaseThreeEdgeEncoding() * this->phaseThreeCornerEncoding(7);
+	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7) * 70);
 }
 
 int main (){
