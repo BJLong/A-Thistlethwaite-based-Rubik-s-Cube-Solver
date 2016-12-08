@@ -484,6 +484,7 @@ void generateListOne(){
 		list[i][0] = 33;
 		list[i][1] = 33;
 	}
+	list[0][0] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
@@ -584,6 +585,7 @@ void generateListTwo(){
 		listTwo[i][0] = 33;
 		listTwo[i][1] = 33;
 	}
+	listTwo[69][0] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
@@ -727,6 +729,7 @@ void generateListThree(){
 		listThree[i][0] = 33;
 		listThree[i][1] = 33;
 	}
+	listThree[0][0] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
 	queue <cube> cubes;
