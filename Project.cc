@@ -508,6 +508,21 @@ void generateListOne(){
 			current.moveCaller(current.oppositeOf(i));
 		}
 	}
+	ofstream phase("phase1Test.txt", ofstream::binary | ios::out);
+	if(phase.is_open()){
+		int y;
+		int x = 0;
+		char c;
+		for(y = 0; y < 2048; y++){
+			x = list[y][0];
+			for(int i = 1; i < 4 ; i++){
+				c = (char)(x >> (i * 8));
+				phase.put(c);
+			}
+			c = list[y][1];
+			phase.put(c);
+		}
+	}
 	ofstream fout("phase1.txt"); 
 	if(fout.is_open()){
 		int y;
@@ -873,9 +888,9 @@ void generateListFour(){
 int main (){
 	cube b;
 	b.resetCube();
-	//generateListOne();
+	generateListOne();
 	//generateListTwo();
 	//generateListThree();
-	generateListFour();
+	// generateListFour();
 	return 0;
 }
