@@ -116,6 +116,18 @@ void makeCube(cube c){
 
 	//populate edges[][]
 	char edges[2][12];
+	for (int i = 0; i < 12; i++){
+		code = 0;
+		for (int j = 0; j < 2; j++){
+			code += 1 << facelet[edgeFacelets[i][j]];
+		}
+		for (int j = 0; j < 12; j++){
+			if( code == edgeMap[j]){
+				edges[0][i] = j;
+			}
+		}
+	}
+	
 
 }
 
