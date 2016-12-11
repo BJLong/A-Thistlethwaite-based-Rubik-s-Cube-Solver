@@ -23,6 +23,21 @@ char rotateLeftArray[54] = {
 	47,50,53, 46,49,52, 45,48,51
 };
 
+char cornerMap[8] = {
+	19, 7, 11, 25, 56, 44, 38, 50
+};
+
+char cornerColors[8][3] = {
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{}
+};
+
 void rotateUp(){
 	char temp[54];
 	for(int i = 0; i < 54; i++){
