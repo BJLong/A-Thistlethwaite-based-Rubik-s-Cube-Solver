@@ -42,6 +42,21 @@ char edgeMap[12] = {
 	3, 5, 9, 17, 18, 6, 12, 24, 48, 40, 36, 34
 };
 
+char edgeFacelets[12][2] = {
+	{37, 10},
+	{41, 1},
+	{43, 28},
+	{39, 19},
+	{14, 21},
+	{12, 5},
+	{32, 3},
+	{30, 23},
+	{48, 25},
+	{46, 34},
+	{50, 7},
+	{52, 16}
+};
+
 void rotateUp(){
 	char temp[54];
 	for(int i = 0; i < 54; i++){
@@ -101,6 +116,7 @@ void makeCube(cube c){
 
 	//populate edges[][]
 	char edges[2][12];
+
 }
 
 vector<char> moves;
