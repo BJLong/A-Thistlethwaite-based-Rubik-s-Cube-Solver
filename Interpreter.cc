@@ -4,6 +4,7 @@
 using namespace std;
 
 char facelet[54];
+int encoding;
 char rotateUpArray[54] = {
 	2, 5, 8,  1, 4, 7,  0, 3, 6,
 	53,52,51, 50,49,48, 47,46,45,
@@ -51,26 +52,40 @@ void orientCube(){
 			rotateLeft();
 		}
 		rotateUp();
-	}
-	while(facelet[13] != 1){
+	
+}	while(facelet[13] != 1){
 		rotateLeft();
 	}
 }
 
 void makeCube(cube c){
 	//need a way to get positions and orientations from facelets
+	encoding = c.phaseOneEncoding();
 }
 
 vector<char> moves;
 
 void phaseOne(){
-	/*
-	while(distination != -1):
-		location = encoding * 8
-		next_move = read(location, sizeof(int))
-		encoding = read(location+4, sizeof(int))
-		moves.push_back(next_move)
-	*/
+	ifstream inFile;
+	int a = 0;
+	//get current state encoding
+	// int location = phaseOneEncoding;
+	inFile.open("Phase1.txt");
+	if(inFile.is_open()){
+		/*
+		while(distination != -1):
+			location = encoding * 8
+			next_move = read(location, sizeof(int))
+			encoding = read(location+4, sizeof(int))
+			moves.push_back(next_move)
+		*/
+		inFile.seekg(location);
+		inFile.read(reinterpret_cast<char *>(&a), sizeof(a));
+		destination = a;
+		inFile.seekg(location + 4);
+		inFile.read(reinterpret_cast<char *>(&a), sizeof(a));
+		moves.push_back(a);
+	}
 }
 
 int main(){
