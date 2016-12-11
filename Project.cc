@@ -515,12 +515,16 @@ void generateListOne(){
 		char c;
 		for(y = 0; y < 2048; y++){
 			x = list[y][0];
-			for(int i = 1; i < 4 ; i++){
-				c = (char)(x >> (i * 8));
-				phase.put(c);
-			}
-			c = list[y][1];
-			phase.put(c);
+			phase.write(reinterpret_cast<char*>(&x),sizeof(x));
+			// for(int i = 1; i < 4 ; i++){
+				// c = (char)(x >> (i * 8));
+				// c = x;
+				// phase.put(c);
+			// }
+			// c = list[y][1];
+			// phase.put(c);
+			x = list[y][1];
+			phase.write(reinterpret_cast<char*>(&x),sizeof(c));
 		}
 	}
 	ofstream fout("phase1.txt"); 
@@ -811,23 +815,23 @@ int cube::phaseFourEdgeEncoding(){
 	int orbitTwo[4];
 	int orbitThree[4];
 	//pull orbitOne
-	orbitOne[0] = corner[0][0];
-	orbitOne[1] = corner[0][2];
-	orbitOne[2] = corner[0][4];
-	orbitOne[3] = corner[0][6];
+	orbitOne[0] = edge[0][1];
+	orbitOne[1] = edge[0][10];
+	orbitOne[2] = edge[0][8];
+	orbitOne[3] = edge[0][3];
 	int orbitOneEncoding = phaseThreeCornerEncoding(3, orbitOne);
 	orbitOneEncoding = orbitOneEncoding / 2;
 	//pull orbitTwo
-	orbitTwo[0] = corner[0][0];
-	orbitTwo[1] = corner[0][2];
-	orbitTwo[2] = corner[0][4];
-	orbitTwo[3] = corner[0][6];
+	orbitTwo[0] = edge[0][0];
+	orbitTwo[1] = edge[0][2];
+	orbitTwo[2] = edge[0][9];
+	orbitTwo[3] = edge[0][11];
 	int orbitTwoEncoding = phaseThreeCornerEncoding(3, orbitTwo);
 	//pull orbitThree
-	orbitThree[0] = corner[0][0];
-	orbitThree[1] = corner[0][2];
-	orbitThree[2] = corner[0][4];
-	orbitThree[3] = corner[0][6];
+	orbitThree[0] = edge[0][4];
+	orbitThree[1] = edge[0][5];
+	orbitThree[2] = edge[0][6];
+	orbitThree[3] = edge[0][7];
 	int orbitThreeEncoding = phaseThreeCornerEncoding(3, orbitThree);
 
 	return orbitOneEncoding * 576 + orbitTwoEncoding * 24 + orbitThreeEncoding;
