@@ -24,7 +24,7 @@ char rotateLeftArray[54] = {
 };
 
 char cornerMap[8] = {
-	19, 7, 11, 25, 56, 44, 38, 50
+	19, 7, 13, 25, 56, 44, 38, 50
 };
 
 char cornerFacelets[8][3] = {
@@ -75,7 +75,24 @@ void orientCube(){
 
 void makeCube(cube c){
 	//need a way to get positions and orientations from facelets
-	encoding = c.phaseOneEncoding();
+	int code;
+	corners[2][8];
+	for (int i = 0; i < 8; i++){
+		code = 0
+		for (int j = 0; j < 3; j++){
+			code += 1 << facelet[cornerFacelets[i][j]];
+		}
+		for (int j = 0; j < 8; j++){
+			if( code == cornerMap[j]){
+				corners[0][i] = j;
+			}
+		}
+		for (int j = 0; j < 3; j++){
+			if(facelet[cornerFacelets[i][j]] == 0 || facelet[cornerFacelets[i][j]] == 5){
+				corners[1][i] == j;
+			}
+		}
+	}
 }
 
 vector<char> moves;
@@ -105,5 +122,6 @@ void phaseOne(){
 
 int main(){
 	// generateListOne();
+
 	return 0;
 }
