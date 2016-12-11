@@ -516,6 +516,7 @@ void generateListOne(){
 		for(y = 0; y < 2048; y++){
 			x = list[y][0];
 			phase.write(reinterpret_cast<char*>(&x),sizeof(x));
+			// phase.write(x,sizeof(x));
 			// for(int i = 1; i < 4 ; i++){
 				// c = (char)(x >> (i * 8));
 				// c = x;
@@ -524,7 +525,8 @@ void generateListOne(){
 			// c = list[y][1];
 			// phase.put(c);
 			x = list[y][1];
-			phase.write(reinterpret_cast<char*>(&x),sizeof(c));
+			// phase.write(x,sizeof(x));
+			phase.write(reinterpret_cast<char*>(&x),sizeof(x));
 		}
 	}
 	ofstream fout("phase1.txt"); 
@@ -889,12 +891,12 @@ void generateListFour(){
 }
 
 
-int main (){
-	cube b;
-	b.resetCube();
-	generateListOne();
-	//generateListTwo();
-	//generateListThree();
-	// generateListFour();
-	return 0;
-}
+// int main (){
+// 	cube b;
+// 	b.resetCube();
+// 	generateListOne();
+// 	//generateListTwo();
+// 	//generateListThree();
+// 	// generateListFour();
+// 	return 0;
+// }
