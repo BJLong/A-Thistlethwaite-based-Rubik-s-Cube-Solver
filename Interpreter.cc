@@ -63,8 +63,14 @@ void makeCube(cube c){
 
 vector<char> moves;
 
-int getNextEncoding(){
-
+void phaseOne(){
+	/*
+	while(distination != -1):
+		location = encoding * 8
+		next_move = read(location, sizeof(int))
+		encoding = read(location+4, sizeof(int))
+		moves.push_back(next_move)
+	*/
 }
 
 int main(){
