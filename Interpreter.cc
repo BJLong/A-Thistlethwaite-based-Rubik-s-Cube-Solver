@@ -116,12 +116,22 @@ void makeCube(cube c){
 
 	//populate edges[][]
 	char edges[2][12];
-	badEdgesWY[12] = {
-		1, 10, 19, 28, 7, 16, 25, 45, 12, 14, 30, 32
+	char edgeBadColors[12][4] = {
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5},
+		{0,5,1,3},
+		{0,5,1,3},
+		{0,5,1,3},
+		{0,5,1,3},
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5}
+		
 	};
-	badEdgesBG[12] = {
-		3, 5, 21, 23, 37, 39, 41, 43, 52, 50, 48, 46
-	};
+
 	for (int i = 0; i < 12; i++){
 		code = 0;
 		for (int j = 0; j < 2; j++){
@@ -132,13 +142,7 @@ void makeCube(cube c){
 				edges[0][i] = j;
 			}
 		}
-		for (int j = 0; j < 12; j++){
-			if(facelet[badEdgesWY[j]] == 0 || facelet[badEdgesWY[j]] == 5)	{
-				edges[1][i] = 1;
-			}else if(facelet[badEdgesBG[j]] == 1 || facelet[badEdgesBG[j]] == 3){
-				edges[1][i] = 1;
-			}else{ edges[1][i] = 0;}
-		}
+		
 	}
 
 
