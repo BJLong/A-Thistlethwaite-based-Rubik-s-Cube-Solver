@@ -38,6 +38,10 @@ char cornerFacelets[8][3] = {
 	{51, 17, 24}
 };
 
+char edgeMap[12] = {
+	3, 5, 9, 17, 18, 6, 12, 24, 48, 40, 36, 34
+};
+
 void rotateUp(){
 	char temp[54];
 	for(int i = 0; i < 54; i++){
@@ -76,7 +80,8 @@ void orientCube(){
 void makeCube(cube c){
 	//need a way to get positions and orientations from facelets
 	int code;
-	corners[2][8];
+	//populate corners[][]
+	char corners[2][8];
 	for (int i = 0; i < 8; i++){
 		code = 0
 		for (int j = 0; j < 3; j++){
@@ -93,6 +98,9 @@ void makeCube(cube c){
 			}
 		}
 	}
+
+	//populate edges[][]
+	char edges[2][12];
 }
 
 vector<char> moves;
