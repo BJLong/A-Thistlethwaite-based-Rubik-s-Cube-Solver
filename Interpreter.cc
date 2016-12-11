@@ -13,11 +13,19 @@ void rotateUp(){
 		facelet[44 - i] = facelet[i + 9];
 	}
 	for(int i = 0; i < 9; i++){
-		temp[i + 9] = facelet[53 - i];
+		facelet[i + 9] = facelet[53 - i];
 	}
-	for(int i = 0; i < 9; i++){
-		temp[53 - i] = facelet[35-i];
-	}
+	//31 to 49
+	facelet[47] = facelet[20];
+	facelet[46] = facelet[28];
+	facelet[45] = facelet[29];
+	facelet[50] = facelet[30];
+	facelet[49] = facelet[31];
+	facelet[48] = facelet[32];
+	facelet[53] = facelet[33];
+	facelet[52] = facelet[34];
+	facelet[51] = facelet[35];
+
 	for(int i = 0; i < 9; i++){
 		facelet[35-i] = temp[i];
 	}
@@ -46,7 +54,7 @@ void rotateUp(){
 
 }
 
-/*ignore for now
+// ignore for now
 void rotateLeft(){
 	char temp[9];
 	for(int i = 0; i < 9; i++){
@@ -64,8 +72,9 @@ void rotateLeft(){
 	for(int i = 0; i < 9; i++){
 		facelet[i+27] = temp[i];
 	}
+
 }
-*/
+
 int main(){
 	return 0;
 }
