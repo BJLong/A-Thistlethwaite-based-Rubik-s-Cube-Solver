@@ -27,7 +27,7 @@ char cornerMap[8] = {
 	19, 7, 11, 25, 56, 44, 38, 50
 };
 
-char cornerColors[8][3] = {
+char cornerFacelets[8][3] = {
 	{36, 18, 11},
 	{38, 9, 2},
 	{44, 0, 29},
