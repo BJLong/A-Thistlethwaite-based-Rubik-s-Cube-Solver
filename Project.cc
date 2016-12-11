@@ -26,9 +26,12 @@ class cube {
 		void moveCaller(int);
 		int oppositeOf(int);
 		int phaseTwoEncode();
-		int phaseThreeCornerEncoding(int);
+		int phaseThreeCornerEncoding(int, int[]);
 		int phaseThreeEdgeEncoding();
 		int phaseThreeEncoding();
+		int phaseFourCornerEncoding();
+		int phaseFourEdgeEncoding();
+		int phaseFourEncoding();
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -505,6 +508,25 @@ void generateListOne(){
 			current.moveCaller(current.oppositeOf(i));
 		}
 	}
+	ofstream phase("phase1Test.txt", ofstream::binary | ios::out);
+	if(phase.is_open()){
+		int y;
+		int x = 0;
+		char c;
+		for(y = 0; y < 2048; y++){
+			x = list[y][0];
+			phase.write(reinterpret_cast<char*>(&x),sizeof(x));
+			// for(int i = 1; i < 4 ; i++){
+				// c = (char)(x >> (i * 8));
+				// c = x;
+				// phase.put(c);
+			// }
+			// c = list[y][1];
+			// phase.put(c);
+			x = list[y][1];
+			phase.write(reinterpret_cast<char*>(&x),sizeof(c));
+		}
+	}
 	ofstream fout("phase1.txt"); 
 	if(fout.is_open()){
 		int y;
@@ -632,17 +654,17 @@ int factorial(int n){
 	}
 }
 
-int cube::phaseThreeCornerEncoding(int i){
+int cube::phaseThreeCornerEncoding(int i, int array[]){
 	if(i > 0){
 		int num = 0;
 		for(int j = i-1; j >= 0; j--){
-			if(corner[0][i] < corner[0][j]){
+			if(array[i] < array[j]){
 				num++;
 			}
 		}
 		int x = num * factorial(i);
 		// cout << "num: " << x << endl;
-		return (x + phaseThreeCornerEncoding(i - 1));
+		return (x + phaseThreeCornerEncoding(i - 1, array));
 	}else {return 0;}
 }
 
@@ -715,7 +737,11 @@ int cube::phaseThreeEdgeEncoding(){
 }
 
 int cube::phaseThreeEncoding(){
-	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7) * 70);
+	int cornerArray[8];
+	for(int i = 0; i < 8; i++){
+		cornerArray[i] = corner[0][i];
+	}
+	return this->phaseThreeEdgeEncoding() + (this->phaseThreeCornerEncoding(7, cornerArray) * 70);
 }
 
 int listThree[2822400][2];
@@ -765,11 +791,110 @@ void generateListThree(){
 	}
 }
 
+int listFour[663552][2];
+
+int cube::phaseFourCornerEncoding(){
+	int even[4];
+	int odd = -1;
+	int evenEncoding = 0;
+	//pull even numbers
+	even[0] = corner[0][0];
+	even[1] = corner[0][2];
+	even[2] = corner[0][4];
+	even[3] = corner[0][6];
+
+	evenEncoding = phaseThreeCornerEncoding(3, even);
+	//odd encoding
+	odd = corner[0][1];
+	odd = (odd - 1) / 2;
+	return evenEncoding * 4 + odd;
+}
+
+int cube::phaseFourEdgeEncoding(){
+	int orbitOne[4];
+	int orbitTwo[4];
+	int orbitThree[4];
+	//pull orbitOne
+	orbitOne[0] = edge[0][1];
+	orbitOne[1] = edge[0][10];
+	orbitOne[2] = edge[0][8];
+	orbitOne[3] = edge[0][3];
+	int orbitOneEncoding = phaseThreeCornerEncoding(3, orbitOne);
+	orbitOneEncoding = orbitOneEncoding / 2;
+	//pull orbitTwo
+	orbitTwo[0] = edge[0][0];
+	orbitTwo[1] = edge[0][2];
+	orbitTwo[2] = edge[0][9];
+	orbitTwo[3] = edge[0][11];
+	int orbitTwoEncoding = phaseThreeCornerEncoding(3, orbitTwo);
+	//pull orbitThree
+	orbitThree[0] = edge[0][4];
+	orbitThree[1] = edge[0][5];
+	orbitThree[2] = edge[0][6];
+	orbitThree[3] = edge[0][7];
+	int orbitThreeEncoding = phaseThreeCornerEncoding(3, orbitThree);
+
+	return orbitOneEncoding * 576 + orbitTwoEncoding * 24 + orbitThreeEncoding;
+}
+
+int cube::phaseFourEncoding(){
+	return this->phaseFourEdgeEncoding() + this->phaseFourCornerEncoding() * 6912;
+}
+
+void generateListFour(){
+	//can only use half turns
+	cube c;
+	cube current;
+	c.resetCube();
+	for(int i = 0; i < 663552; i++){
+		listFour[i][0] = 33;
+		listFour[i][1] = 33;
+	}
+	listFour[0][0] = -1;
+	int prevEncoding = 0;
+	int encoding = 0;
+	queue <cube> cubes;
+	cubes.push(c); //the root cube
+	while(!cubes.empty()){
+		current = cubes.front();
+		cubes.pop();
+		for(int i = 0; i < 33; i++){
+			if(i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 24 || i == 25 || i == 26){
+				prevEncoding = current.phaseFourEncoding();
+				current.moveCaller(i);
+				encoding = current.phaseFourEncoding();
+				if(listFour[encoding][0] == 33){
+					cubes.push(current);
+					listFour[encoding][1] = prevEncoding;
+					listFour[encoding][0] = current.oppositeOf(i);
+				}
+				current.moveCaller(current.oppositeOf(i));
+			}
+		}
+	}
+	ofstream fout("phase4.txt"); 
+	if(fout.is_open()){
+		int y;
+		for(y = 0; y < 663552; y++){
+			if(listFour[y][0] != 33){
+				fout << "e: " << y << " - m:";
+				fout << " " << listFour[y][0];
+				fout << " d: " << listFour[y][1];
+				fout << endl;
+			}
+		}
+	}else{
+		cout << "File could not be opened." << endl;
+	}
+}
+
+
 int main (){
 	cube b;
 	b.resetCube();
-	//generateListOne();
+	generateListOne();
 	//generateListTwo();
 	//generateListThree();
+	// generateListFour();
 	return 0;
 }
