@@ -1,57 +1,22 @@
 #include <stdio.h>
 #include <iostream>
 using namespace std;
-
+//corner 0-5 edge 6-12, mi
+char rotateUpArray[54] = {
+	2,5,8,1,4,7,0,3,6, //rotate about 4
+	53,52,51,50,49,48,47,46,45,
+	24,21,18,25,22,19,26,23,20,
+	36,37,38,39,40,41,42,43,44,
+	17,16,15,14,13,12,11,10,9,
+	27,28,29,30,31,32,33,34,35,
+};
 char facelet[54];
 
 void rotateUp(){
-	char temp[9];
-	for(int i = 0; i < 9; i++){
-		temp[i] = facelet[44 - i];
+	temp = facelet;
+	for(int i = 0; i < 54; i++){
+		facelet[i] = temp[rotateUpArray[i]];
 	}
-	for(int i = 0; i < 9; i++){
-		facelet[44 - i] = facelet[i + 9];
-	}
-	for(int i = 0; i < 9; i++){
-		facelet[i + 9] = facelet[53 - i];
-	}
-	//31 to 49
-	facelet[47] = facelet[20];
-	facelet[46] = facelet[28];
-	facelet[45] = facelet[29];
-	facelet[50] = facelet[30];
-	facelet[49] = facelet[31];
-	facelet[48] = facelet[32];
-	facelet[53] = facelet[33];
-	facelet[52] = facelet[34];
-	facelet[51] = facelet[35];
-
-	for(int i = 0; i < 9; i++){
-		facelet[35-i] = temp[i];
-	}
-	//rotate about facelet[4]
-	temp[0] = facelet[0];
-	temp[1] = facelet[1];
-	facelet[0] = facelet[2];
-	facelet[2] = facelet[8];
-	facelet[8] = facelet[6];
-	facelet[6] = temp[0];
-	facelet[1] = facelet[5];
-	facelet[5] = facelet[7];
-	facelet[7] = facelet[3];
-	facelet[3] = temp[1];
-	//rotate about facelet[22]
-	temp[0] = facelet[18];
-	temp[1] = facelet[19];
-	facelet[18] = facelet[24];
-	facelet[24] = facelet[26];
-	facelet[26] = facelet[20];
-	facelet[20] = temp[0];
-	facelet[19] = facelet[21];
-	facelet[21] = facelet[25];
-	facelet[25] = facelet[23];
-	facelet[23] = temp[1];
-
 }
 
 // ignore for now
