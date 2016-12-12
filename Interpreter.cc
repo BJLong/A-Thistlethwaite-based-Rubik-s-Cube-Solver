@@ -41,10 +41,6 @@ void readLists(){
 
 }
 
-void phaseOne(cube c){
-	
-}
-
 int main(){
 	//with facelet given..
 	cube c;
