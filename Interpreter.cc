@@ -55,14 +55,24 @@ int main(){
 	cube c;
 	c.orientCube(facelet);
 	c.setCube();
-	int destination = c.phaseOneEncoding();
-	while(destination != -1){
+	readLists();
+	for (int i = 350; i < 380; ++i)
+	{
+		cout << i << ": " << lOne[i][0] << " " << lOne[i][1] << endl;
+	}
+	cout << "lOne[0][0] = " << lOne[0][0] << endl;
+	int destination = c.phaseOneEncode();
+	cout << "starting encoding: " << destination << endl;
+	while(destination != -1 && destination < 2048){
+		cout << "going through phase1 - destination: " << destination << endl;
+		cout << lOne[destination][0] << endl;
 		moves.push_back(lOne[destination][0]);
+		cout << "move: " << moves.back() << endl;
 		c.moveCaller(moves.back());
 		destination = lOne[destination][1];
 	}
 
-	destination = c.phaseTwoEncoding();
+	destination = c.phaseTwoEncode();
 	while(destination != -1){
 		moves.push_back(lTwo[destination][0]);
 		c.moveCaller(moves.back());
