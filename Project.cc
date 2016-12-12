@@ -640,6 +640,7 @@ int cube::oppositeOf(int num){
 }
 
 void generateListOne(){
+	cout << "generating list one" << endl;
 	cube c;
 	cube current;
 	c.resetCube();
@@ -661,6 +662,7 @@ void generateListOne(){
 			prevEncoding = current.phaseOneEncode();
 			current.moveCaller(i);
 			encoding = current.phaseOneEncode();
+			if(encoding > 2048){ cout << "BIG ERROR" << endl;}
 			if(list[encoding][0] == 33){
 				cubes.push(current);
 				list[encoding][1] = prevEncoding;
@@ -672,6 +674,10 @@ void generateListOne(){
 	int pin = open("Phase1.txt",O_WRONLY|O_CREAT,0666);
 	write(pin, *list,2048*2*sizeof(int));
 	close(pin);
+// 	FILE * pFILE;
+// 	pFILE = fopen("Phase1.txt", "w");
+// 	fwrite(list, sizeof(int), sizeof(list),pFILE);
+// 	fclose(pFILE);
 }
 
 int choose(int n,int k){

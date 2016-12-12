@@ -52,22 +52,24 @@ void readLists(){
 
 int main(){
 	//with facelet given..
+	generateListOne();
 	cube c;
 	c.orientCube(facelet);
 	c.setCube();
 	readLists();
 	for (int i = 350; i < 380; ++i)
 	{
-		cout << i << ": " << lOne[i][0] << " " << lOne[i][1] << endl;
+		cout << i << ": " << htonl(lOne[i][0]) << " " << htonl(lOne[i][1]) << endl;
 	}
-	cout << "lOne[0][0] = " << lOne[0][0] << endl;
+	/*
+	// cout << "lOne[0][0] = " << lOne[0][0] << endl;
 	int destination = c.phaseOneEncode();
-	cout << "starting encoding: " << destination << endl;
+	// cout << "starting encoding: " << destination << endl;
 	while(destination != -1 && destination < 2048){
-		cout << "going through phase1 - destination: " << destination << endl;
-		cout << lOne[destination][0] << endl;
+		// cout << "going through phase1 - destination: " << destination << endl;
+		// cout << lOne[destination][0] << endl;
 		moves.push_back(lOne[destination][0]);
-		cout << "move: " << moves.back() << endl;
+		// cout << "move: " << moves.back() << endl;
 		c.moveCaller(moves.back());
 		destination = lOne[destination][1];
 	}
@@ -92,7 +94,7 @@ int main(){
 		c.moveCaller(moves.back());
 		destination = lFour[destination][1];
 	}
-
+	
 	ofstream outfile;
 	outfile.open("solved.txt");
 	string allMoves = "- complete!";
@@ -202,5 +204,6 @@ int main(){
 	}
 	outfile << "Solution: \n" << allMoves << "\n";
 	outfile.close();
+	*/
 	return 0;
 }
