@@ -669,39 +669,9 @@ void generateListOne(){
 			current.moveCaller(current.oppositeOf(i));
 		}
 	}
-	ofstream phase("phase1Test.txt", ofstream::binary | ios::out);
-	if(phase.is_open()){
-		int y;
-		int x = 0;
-		char c;
-		for(y = 0; y < 2048; y++){
-			x = list[y][0];
-			phase.write(reinterpret_cast<char*>(&x),sizeof(x));
-			// phase.write(x,sizeof(x));
-			// for(int i = 1; i < 4 ; i++){
-				// c = (char)(x >> (i * 8));
-				// c = x;
-				// phase.put(c);
-			// }
-			// c = list[y][1];
-			// phase.put(c);
-			x = list[y][1];
-			// phase.write(x,sizeof(x));
-			phase.write(reinterpret_cast<char*>(&x),sizeof(x));
-		}
-	}
-	ofstream fout("phase1.txt"); 
-	if(fout.is_open()){
-		int y;
-		for(y = 0; y < 2048; y++){
-			fout << "e: " << y << " - m:";
-			fout << " " << list[y][0];
-			fout << " d: " << list[y][1];
-			fout << endl;
-		}
-	}else{
-		cout << "File could not be opened." << endl;
-	}
+	int pin = open("Phase1.txt",O_WRONLY|O_CREAT,0666);
+	write(pin, *list,2048*2*sizeof(int));
+	close(pin);
 }
 
 int choose(int n,int k){
@@ -792,18 +762,9 @@ void generateListTwo(){
 			}
 		}
 	}
-	ofstream fout("phase2.txt"); 
-	if(fout.is_open()){
-		int y;
-		for(y = 0; y < 1082565; y++){
-			fout << "e: " << y << " - m:";
-			fout << " " << listTwo[y][0];
-			fout << " d: " << listTwo[y][1];
-			fout << endl;
-		}
-	}else{
-		cout << "File could not be opened." << endl;
-	}
+	int pin = open("Phase2.txt",O_WRONLY|O_CREAT,0666);
+	write(pin, *listTwo,1082565*2*sizeof(int));
+	close(pin);
 }
 
 int factorial(int n){
@@ -940,18 +901,9 @@ void generateListThree(){
 			}
 		}
 	}
-	ofstream fout("phase3.txt"); 
-	if(fout.is_open()){
-		int y;
-		for(y = 0; y < 2822400; y++){
-			fout << "e: " << y << " - m:";
-			fout << " " << listThree[y][0];
-			fout << " d: " << listThree[y][1];
-			fout << endl;
-		}
-	}else{
-		cout << "File could not be opened." << endl;
-	}
+	int pin = open("Phase3.txt",O_WRONLY|O_CREAT,0666);
+	write(pin, *listThree,2822400*2*sizeof(int));
+	close(pin);
 }
 
 int listFour[663552][2];
@@ -1035,20 +987,9 @@ void generateListFour(){
 			}
 		}
 	}
-	ofstream fout("phase4.txt"); 
-	if(fout.is_open()){
-		int y;
-		for(y = 0; y < 663552; y++){
-			if(listFour[y][0] != 33){
-				fout << "e: " << y << " - m:";
-				fout << " " << listFour[y][0];
-				fout << " d: " << listFour[y][1];
-				fout << endl;
-			}
-		}
-	}else{
-		cout << "File could not be opened." << endl;
-	}
+	int pin = open("Phase4.txt",O_WRONLY|O_CREAT,0666);
+	write(pin, *listFour,663552*2*sizeof(int));
+	close(pin);
 }
 
 
