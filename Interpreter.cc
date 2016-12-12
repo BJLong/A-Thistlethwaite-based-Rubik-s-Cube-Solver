@@ -23,29 +23,44 @@ int lThree[2822400][2];
 int lFour[663552][2];
 
 void readLists(){
+	// vector <int> y;
+	// int x;
+	// ifstream pread;
+	// pread.open("Phase1.txt");
+	// while(pread >> x){
+	// 	y.push_back(x);
+	// }
+	// // y.pop_back();
+	// for (int i = 2047; i >= 0; i--)
+	// {
+	// 	lOne[i][1] = y.back();
+	// 	y.pop_back();
+	// 	lOne[i][0] = y.back();
+	// 	y.pop_back();
+	// }
 	int pread = open("Phase1.txt", O_RDONLY);
 	if(pread != -1){
 		read(pread, *lOne, 2048*2*sizeof(int));
 	}
 	close(pread);
 
-	pread = open("Phase2.txt", O_RDONLY);
-	if(pread != -1){
-		read(pread, *lTwo, 1082565*2*sizeof(int));
-	}
-	close(pread);
+	// pread = open("Phase2.txt", O_RDONLY);
+	// if(pread != -1){
+	// 	read(pread, *lTwo, 1082565*2*sizeof(int));
+	// }
+	// close(pread);
 
-	pread = open("Phase3.txt", O_RDONLY);
-	if(pread != -1){
-		read(pread, *lThree, 2822400*2*sizeof(int));
-	}
-	close(pread);
+	// pread = open("Phase3.txt", O_RDONLY);
+	// if(pread != -1){
+	// 	read(pread, *lThree, 2822400*2*sizeof(int));
+	// }
+	// close(pread);
 
-	pread = open("Phase4.txt", O_RDONLY);
-	if(pread != -1){
-		read(pread, *lFour, 663552*2*sizeof(int));
-	}
-	close(pread);
+	// pread = open("Phase4.txt", O_RDONLY);
+	// if(pread != -1){
+	// 	read(pread, *lFour, 663552*2*sizeof(int));
+	// }
+	// close(pread);
 
 
 }
@@ -53,13 +68,15 @@ void readLists(){
 int main(){
 	//with facelet given..
 	generateListOne();
+	cout << "list one complete" << endl;
 	cube c;
 	c.orientCube(facelet);
 	c.setCube();
+	cout << "cube set" << endl;
 	readLists();
 	for (int i = 350; i < 380; ++i)
 	{
-		cout << i << ": " << htonl(lOne[i][0]) << " " << htonl(lOne[i][1]) << endl;
+		cout << i << ": " << lOne[i][0] << " " << lOne[i][1] << endl;
 	}
 	/*
 	// cout << "lOne[0][0] = " << lOne[0][0] << endl;
