@@ -142,14 +142,13 @@ void makeCube(cube c){
 				edges[0][i] = j;
 
 			}
-			if (facelet[edgeFacelets[i][0]] == edgeBadColors[i][0] || 
-			facelet[edgeFacelets[i][0]] == edgeBadColors[i][1] || 
-			facelet[edgeFacelets[i][1]] == edgeBadColors[i][2] || 
-			facelet[edgeFacelets[i][1]] == edgeBadColors[i][3]){
-				edges[1][i] = 1;
-			}else{edges[1][i] = 0;}
 		}
-		
+		if (facelet[edgeFacelets[i][0]] == edgeBadColors[i][0] || 
+		facelet[edgeFacelets[i][0]] == edgeBadColors[i][1] || 
+		facelet[edgeFacelets[i][1]] == edgeBadColors[i][2] || 
+		facelet[edgeFacelets[i][1]] == edgeBadColors[i][3]){
+			edges[1][i] = 1;
+		}else{edges[1][i] = 0;}		
 	}
 
 
