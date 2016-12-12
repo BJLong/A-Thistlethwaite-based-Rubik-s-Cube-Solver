@@ -32,7 +32,6 @@ void phaseOne(){
 }
 
 int main(){
-	// generateListOne();
 
 	return 0;
 }
