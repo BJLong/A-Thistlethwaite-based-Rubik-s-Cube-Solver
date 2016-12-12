@@ -11,7 +11,14 @@ class cube {
 	private:
 		static const char edgeMoves[6][4];
 		static const char cornerMoves[6][4];
-		char edge[2][12];;
+		static const char rotateUpArray[54];
+		static const char rotateLeftArray[54];
+		static const char cornerMap[8];
+		static const char cornerFacelets[8][3];
+		static const char edgeMap[12];
+		static const char edgeFacelets[12][2];
+		char facelet[54];
+		char edge[2][12];
 		char corner[2][8];
 	public:
 		void twistClockwise(int);
@@ -32,6 +39,10 @@ class cube {
 		int phaseFourCornerEncoding();
 		int phaseFourEdgeEncoding();
 		int phaseFourEncoding();
+		void rotateUp();
+		void rotateLeft();
+		void orientCube(char[]);
+		void setCube();
 };
 
 const char cube::edgeMoves[6][4] = {
@@ -50,6 +61,156 @@ const char cube::cornerMoves[6][4] = {
 	{0,3,4,7},		//orange
 	{4,5,6,7}		//yellow
 };
+const char cube::rotateUpArray[54] = {
+	2, 5, 8,  1, 4, 7,  0, 3, 6,
+	53,52,51, 50,49,48, 47,46,45,
+	24,21,18, 25,22,19, 26,23,20,
+	36,37,38, 39,40,41, 42,43,44,
+	17,16,15, 14,13,12, 11,10,9,
+	27,28,29, 30,31,32, 33,34,35,
+};
+
+const char cube::rotateLeftArray[54] = {
+	9,10,11,  12,13,14, 15,16,17,
+	18,19,20, 21,22,23, 24,25,26,
+	27,28,29, 30,31,32, 33,34,35,
+	0, 1, 2,  3, 4, 5,  6, 7, 8,
+	42,39,36, 43,40,37, 44,41,38,
+	47,50,53, 46,49,52, 45,48,51
+};
+
+const char cube::cornerMap[8] = {
+	19, 7, 13, 25, 56, 44, 38, 50
+};
+
+const char cube::cornerFacelets[8][3] = {
+	{36, 18, 11},
+	{38, 9, 2},
+	{44, 0, 29},
+	{42, 27, 20},
+	{45, 26, 33},
+	{47, 35, 6},
+	{53, 8, 15},
+	{51, 17, 24}
+};
+
+const char cube::edgeMap[12] = {
+	3, 5, 9, 17, 18, 6, 12, 24, 48, 40, 36, 34
+};
+
+const char cube::edgeFacelets[12][2] = {
+	{37, 10},
+	{41, 1},
+	{43, 28},
+	{39, 19},
+	{14, 21},
+	{12, 5},
+	{32, 3},
+	{30, 23},
+	{48, 25},
+	{46, 34},
+	{50, 7},
+	{52, 16}
+};
+
+void cube::rotateUp(){
+	char temp[54];
+	for(int i = 0; i < 54; i++){
+	temp[i] = facelet[i];
+	}
+	for(int i = 0; i < 54; i++){
+		facelet[i] = temp[rotateUpArray[i]];
+	}
+}
+
+void cube::rotateLeft(){
+	char temp[54];
+	for(int i = 0; i < 54; i++){
+	temp[i] = facelet[i];
+	}
+	for(int i = 0; i < 54; i++){
+		facelet[i] = temp[rotateLeftArray[i]];
+	}	
+}
+
+void cube::orientCube(char faceletIn[54]){
+	for (int i = 0; i < 54; i++){
+		facelet[i] = faceletIn[i];
+	}
+	if(facelet[49] == 0){
+		rotateUp();
+	}
+	if(facelet[40] != 0){
+		while(facelet[13] != 0){
+			rotateLeft();
+		}
+		rotateUp();
+	
+}	while(facelet[13] != 1){
+		rotateLeft();
+	}
+}
+
+void cube::setCube(){
+	//need a way to get positions and orientations from facelets
+	int code;
+	//populate corners[][]
+	char corner[2][8];
+	for (int i = 0; i < 8; i++){
+		code = 0;
+		for (int j = 0; j < 3; j++){
+			code += 1 << facelet[cornerFacelets[i][j]];
+		}
+		for (int j = 0; j < 8; j++){
+			if( code == cornerMap[j]){
+				corner[0][i] = j;
+			}
+		}
+		for (int j = 0; j < 3; j++){
+			if(facelet[cornerFacelets[i][j]] == 0 || facelet[cornerFacelets[i][j]] == 5){
+				corner[1][i] == j;
+			}
+		}
+	}
+
+	//populate edges[][]
+	char edges[2][12];
+	char edgeBadColors[12][4] = {
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5},
+		{0,5,1,3},
+		{0,5,1,3},
+		{0,5,1,3},
+		{0,5,1,3},
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5},
+		{1,3,0,5}
+		
+	};
+
+	for (int i = 0; i < 12; i++){
+		code = 0;
+		for (int j = 0; j < 2; j++){
+			code += 1 << facelet[edgeFacelets[i][j]];
+		}
+		for (int j = 0; j < 12; j++){
+			if( code == edgeMap[j]){
+				edge[0][i] = j;
+
+			}
+		}
+		if (facelet[edgeFacelets[i][0]] == edgeBadColors[i][0] || 
+		facelet[edgeFacelets[i][0]] == edgeBadColors[i][1] || 
+		facelet[edgeFacelets[i][1]] == edgeBadColors[i][2] || 
+		facelet[edgeFacelets[i][1]] == edgeBadColors[i][3]){
+			edge[1][i] = 1;
+		}else{edge[1][i] = 0;}		
+	}
+}
+
 
 void cube::twistClockwise(int face) {
 	//twist corrosponding edges clockwise
