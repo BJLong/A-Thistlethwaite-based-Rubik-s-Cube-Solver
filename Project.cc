@@ -1,49 +1,15 @@
-#include <stdio.h>
+#include <cstdio>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <iostream>
 #include <queue>
 #include <vector>
 #include <list>
 #include <fstream>
 #include <algorithm>
+#include "cube.h"
 using namespace std;
-
-class cube {
-	private:
-		static const char edgeMoves[6][4];
-		static const char cornerMoves[6][4];
-		static const char rotateUpArray[54];
-		static const char rotateLeftArray[54];
-		static const char cornerMap[8];
-		static const char cornerFacelets[8][3];
-		static const char edgeMap[12];
-		static const char edgeFacelets[12][2];
-		char facelet[54];
-		char edge[2][12];
-		char corner[2][8];
-	public:
-		void twistClockwise(int);
-		void twistCounterClockwise(int);
-		void halfTwist(int);
-		void slice(int);
-		void halfSlice(int);
-		void antiSlice(int);
-		void antiSliceCounterClockwise(int);
-		int phaseOneEncode();
-		void resetCube();
-		void moveCaller(int);
-		int oppositeOf(int);
-		int phaseTwoEncode();
-		int phaseThreeCornerEncoding(int, int[]);
-		int phaseThreeEdgeEncoding();
-		int phaseThreeEncoding();
-		int phaseFourCornerEncoding();
-		int phaseFourEdgeEncoding();
-		int phaseFourEncoding();
-		void rotateUp();
-		void rotateLeft();
-		void orientCube(char[]);
-		void setCube();
-};
 
 const char cube::edgeMoves[6][4] = {
 	{0,1,2,3},
@@ -155,12 +121,13 @@ void cube::setCube(){
 	//need a way to get positions and orientations from facelets
 	int code;
 	//populate corners[][]
-	char corner[2][8];
+//	char corner[2][8];
 	for (int i = 0; i < 8; i++){
 		code = 0;
 		for (int j = 0; j < 3; j++){
 			code += 1 << facelet[cornerFacelets[i][j]];
 		}
+//cout << "corner " << i << " value " << code << endl;
 		for (int j = 0; j < 8; j++){
 			if( code == cornerMap[j]){
 				corner[0][i] = j;
@@ -168,7 +135,7 @@ void cube::setCube(){
 		}
 		for (int j = 0; j < 3; j++){
 			if(facelet[cornerFacelets[i][j]] == 0 || facelet[cornerFacelets[i][j]] == 5){
-				corner[1][i] == j;
+				corner[1][i] = j;
 			}
 		}
 	}
@@ -196,6 +163,7 @@ void cube::setCube(){
 		for (int j = 0; j < 2; j++){
 			code += 1 << facelet[edgeFacelets[i][j]];
 		}
+//cout << "edge " << i << " value " << code << endl;
 		for (int j = 0; j < 12; j++){
 			if( code == edgeMap[j]){
 				edge[0][i] = j;
@@ -235,14 +203,6 @@ void cube::twistClockwise(int face) {
 		edge[1][edgeMoves[face][3]] = (edge[1][edgeMoves[face][3]] + 1) % 2;
 	}
 
-	//corner orientation
-	if(face != 0 && face != 5){
-		corner[1][cornerMoves[face][0]] = (corner[1][cornerMoves[face][0]] + 2) % 3;
-		corner[1][cornerMoves[face][1]] = (corner[1][cornerMoves[face][1]] + 1) % 3;
-		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 2) % 3;
-		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 1) % 3;
-	}
-
 	//move orientations
 	temp = edge[1][edgeMoves[face][0]];
 	edge[1][edgeMoves[face][0]] = edge[1][edgeMoves[face][3]];
@@ -256,6 +216,15 @@ void cube::twistClockwise(int face) {
 	corner[1][cornerMoves[face][3]] = corner[1][cornerMoves[face][2]];
 	corner[1][cornerMoves[face][2]] = corner[1][cornerMoves[face][1]];
 	corner[1][cornerMoves[face][1]] = temp;
+
+	//corner orientation
+	if(face != 0 && face != 5){
+		corner[1][cornerMoves[face][0]] = (corner[1][cornerMoves[face][0]] + 2) % 3;
+		corner[1][cornerMoves[face][1]] = (corner[1][cornerMoves[face][1]] + 1) % 3;
+		corner[1][cornerMoves[face][2]] = (corner[1][cornerMoves[face][2]] + 2) % 3;
+		corner[1][cornerMoves[face][3]] = (corner[1][cornerMoves[face][3]] + 1) % 3;
+	}
+
 }
 
 void cube::twistCounterClockwise(int face) {
@@ -300,6 +269,7 @@ void cube::twistCounterClockwise(int face) {
 	corner[1][cornerMoves[face][1]] = corner[1][cornerMoves[face][2]];
 	corner[1][cornerMoves[face][2]] = corner[1][cornerMoves[face][3]];
 	corner[1][cornerMoves[face][3]] = temp;
+
 }
 
 void cube::halfTwist(int face) {
@@ -650,8 +620,10 @@ void generateListOne(){
 		list[i][1] = 33;
 	}
 	list[0][0] = -1;
+    list[0][1] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
+    int count=0;
 	queue <cube> cubes;
 	cubes.push(c); //the root cube
 	//while(count < 2048){
@@ -666,13 +638,18 @@ void generateListOne(){
 				cubes.push(current);
 				list[encoding][1] = prevEncoding;
 				list[encoding][0] = current.oppositeOf(i);
+count++;
+if (count % 1000 == 0) {
+  cout << '\r' << count;
+  cout.flush();
+}
 			}
 			current.moveCaller(current.oppositeOf(i));
 		}
 	}
-	// int pin = open("Phase1.txt",O_WRONLY|O_CREAT,0666);
-	// write(pin, *list,2048*2*sizeof(int));
-	// close(pin);
+	int pin = open("Phase1.txt",O_WRONLY|O_CREAT,0666);
+	write(pin, list,2048*2*sizeof(int));
+	close(pin);
 // 	FILE * pFILE;
 // 	pFILE = fopen("Phase1.txt", "w");
 // 	fwrite(list, sizeof(int), sizeof(list),pFILE);
@@ -680,9 +657,17 @@ void generateListOne(){
 }
 
 int choose(int n,int k){
-	if(k == 0){ return 1;}
+/*	if(k == 0){ return 1;}
 	if(n == 0){ return 0;}
-	return ((n * choose(n - 1, k - 1)) / k);
+	return ((n * choose(n - 1, k - 1)) / k);*/
+if (k>n) return 0;
+int ans=1;
+if (k > n-k) k = n-k;
+for (int j=0;j<k;j++) {
+ans *= n - j;
+ans /= 1 + j;
+}
+return ans;
 }
 
 int cube::phaseTwoEncode(){
@@ -746,19 +731,35 @@ void generateListTwo(){
 		listTwo[i][1] = 33;
 	}
 	listTwo[69][0] = -1;
+    listTwo[69][1] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
+int count=0,count2=0;
 	queue <cube> cubes;
 	cubes.push(c); //the root cube
+cout << c.phaseTwoEncode() << endl;
 	while(!cubes.empty()){
+count2++;
 		current = cubes.front();
 		cubes.pop();
+if (count2 % 1000 == 0) {
+  cout << '\r' << count << "     " << count2;
+  cout.flush();
+}
 		for(int i = 0; i < 33; i++){
+//cout << current.phaseTwoEncode() << ' ';
 			if(i != 2 && i != 4 &&i != 8 && i != 10 && i != 20 && i != 22 && i != 29 && i != 32){
 				prevEncoding = current.phaseTwoEncode();
 				current.moveCaller(i);
 				encoding = current.phaseTwoEncode();
+if (encoding == 146091)
+  cout << "\n***" << prevEncoding << "   " << encoding << endl;
 				if(listTwo[encoding][0] == 33){
+count++;
+if (encoding == 146091)
+  cout << "Yes" << listTwo[145101][1] << endl;
+if (encoding == 145101)
+  cout << "encoding 145101 has prev " << prevEncoding << endl;
 					cubes.push(current);
 					listTwo[encoding][1] = prevEncoding;
 					listTwo[encoding][0] = current.oppositeOf(i);
@@ -766,9 +767,14 @@ void generateListTwo(){
 				current.moveCaller(current.oppositeOf(i));
 			}
 		}
+//cout << endl;
 	}
+for (int i=1;i<1082565;i++)
+  if (listTwo[i][0] == 33)
+    cout << "Error, state " << i << " not reached." << endl;
+
 	int pin = open("Phase2.txt",O_WRONLY|O_CREAT,0666);
-	write(pin, *listTwo,1082565*2*sizeof(int));
+	write(pin, listTwo,1082565*2*sizeof(int));
 	close(pin);
 }
 
@@ -887,6 +893,7 @@ void generateListThree(){
 	listThree[0][0] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
+int count=0;
 	queue <cube> cubes;
 	cubes.push(c); //the root cube
 	while(!cubes.empty()){
@@ -898,6 +905,11 @@ void generateListThree(){
 				current.moveCaller(i);
 				encoding = current.phaseThreeEncoding();
 				if(listThree[encoding][0] == 33){
+count++;
+if (count % 1000 == 0) {
+  cout << '\r' << count;
+  cout.flush();
+}
 					cubes.push(current);
 					listThree[encoding][1] = prevEncoding;
 					listThree[encoding][0] = current.oppositeOf(i);
@@ -907,7 +919,7 @@ void generateListThree(){
 		}
 	}
 	int pin = open("Phase3.txt",O_WRONLY|O_CREAT,0666);
-	write(pin, *listThree,2822400*2*sizeof(int));
+	write(pin, listThree,2822400*2*sizeof(int));
 	close(pin);
 }
 
@@ -970,20 +982,29 @@ void generateListFour(){
 		listFour[i][0] = 33;
 		listFour[i][1] = 33;
 	}
-	listFour[0][0] = -1;
+	listFour[4032][0] = -1;
+    listFour[4032][1] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
+int count=0;
 	queue <cube> cubes;
 	cubes.push(c); //the root cube
+cout << c.phaseFourEncoding() << endl;
 	while(!cubes.empty()){
 		current = cubes.front();
 		cubes.pop();
 		for(int i = 0; i < 33; i++){
 			if(i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 24 || i == 25 || i == 26){
+//cout << current.phaseFourEncoding() << ' ';
 				prevEncoding = current.phaseFourEncoding();
 				current.moveCaller(i);
 				encoding = current.phaseFourEncoding();
 				if(listFour[encoding][0] == 33){
+count++;
+if (count % 1000 == 0) {
+  cout << '\r' << count;
+  cout.flush();
+}
 					cubes.push(current);
 					listFour[encoding][1] = prevEncoding;
 					listFour[encoding][0] = current.oppositeOf(i);
@@ -991,13 +1012,55 @@ void generateListFour(){
 				current.moveCaller(current.oppositeOf(i));
 			}
 		}
+//cout << endl;
 	}
+for (int i=1;i<663552;i++)
+  if (listFour[i][0] == 33)
+    cout << "Error: state " << i << " not reached." << endl;
+
 	int pin = open("Phase4.txt",O_WRONLY|O_CREAT,0666);
-	write(pin, *listFour,663552*2*sizeof(int));
+	write(pin, listFour,663552*2*sizeof(int));
 	close(pin);
 }
 
+void cube::dumpCubeArrays(void) {
+  cout << "corner positions:";
+  for (int i=0;i<8;i++)
+    cout << ' ' << (int)corner[0][i];
+  cout << endl;
+  cout << "corner orientations:";
+  for (int i=0;i<8;i++)
+    cout << ' ' << (int)corner[1][i];
+  cout << endl;
+  cout << "edge positions:";
+  for (int i=0;i<12;i++)
+    cout << ' ' << (int)edge[0][i];
+  cout << endl;
+  cout << "edge orientations:";
+  for (int i=0;i<12;i++)
+    cout << ' ' << (int)edge[1][i];
+  cout << endl;
+}
 
+void cube::dumpCubeFacelets(void) {
+  int map[] = {
+97,97,97,44,43,42,98,
+97,97,97,41,40,39,98,
+97,97,97,38,37,36,98,
+0,1,2,9,10,11,18,19,20,27,28,29,98,
+3,4,5,12,13,14,21,22,23,30,31,32,98,
+6,7,8,15,16,17,24,25,26,33,34,35,98,
+97,97,97,53,52,51,98,
+97,97,97,50,49,48,98,
+97,97,97,47,46,45,98,99};
+for (int i=0;map[i]!=99;i++)
+  if (map[i] == 97)
+    cout << ' ';
+  else if (map[i] == 98)
+    cout << endl;
+  else
+    cout << "wbrgoy"[facelet[map[i]]];
+}
 // int main (){
 // 	cube b;
 // 	b.resetCube();
