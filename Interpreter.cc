@@ -68,59 +68,70 @@ void readLists(){
 
 int main(){
 	//with facelet given..
-	char facelet[80];
-	int i,j;
-	for (i=0;i<54;i++) {
-	  cin >> j;
-	  facelet[i] = j;
-	}
+char facelet[80];
+int i,j;
+for (i=0;i<54;i++) {
+  cin >> j;
+  facelet[i] = j;
+}
+//	generateListOne();
+//	cout << "list one complete" << endl;
 	cube c;
 	c.orientCube(facelet);
 	c.setCube();
 	cout << "cube set" << endl;
 	readLists();
-	c.dumpCubeArrays();
-	c.dumpCubeFacelets();
+c.dumpCubeArrays();
+c.dumpCubeFacelets();
+//	for (int i = 350; i < 380; ++i)
+//	{
+//		cout << i << ": " << lOne[i][0] << " " << lOne[i][1] << endl;
+//	}
 	
+	// cout << "lOne[0][0] = " << lOne[0][0] << endl;
 	int destination = c.phaseOneEncode();
+	// cout << "starting encoding: " << destination << endl;
 	while(destination != 0 && destination < 2048){
+		// cout << "going through phase1 - destination: " << destination << endl;
+		// cout << lOne[destination][0] << endl;
 		moves.push_back(lOne[destination][0]);
+		// cout << "move: " << moves.back() << endl;
 		c.moveCaller(moves.back());
 		destination = lOne[destination][1];
-		cout << destination << '.'; cout.flush();
+cout << destination << '.'; cout.flush();
 	}
-	moves.push_back(33);
-	cout << "//" << endl;
+moves.push_back(33);
+cout << "//" << endl;
 
 	destination = c.phaseTwoEncode();
 	while(destination != 69){
 		moves.push_back(lTwo[destination][0]);
 		c.moveCaller(moves.back());
 		destination = lTwo[destination][1];
-		cout << destination << '.'; cout.flush();
+cout << destination << '.'; cout.flush();
 	}
-	moves.push_back(33);
-	cout << "//" << endl;
+moves.push_back(33);
+cout << "//" << endl;
 
 	destination = c.phaseThreeEncoding();
 	while(destination != 0){
 		moves.push_back(lThree[destination][0]);
 		c.moveCaller(moves.back());
 		destination = lThree[destination][1];
-		cout << destination << '.'; cout.flush();
+cout << destination << '.'; cout.flush();
 	}
-		moves.push_back(33);
-		cout << "//" << endl;
+moves.push_back(33);
+cout << "//" << endl;
 
 	destination = c.phaseFourEncoding();
 	while(destination != 4032){
 		moves.push_back(lFour[destination][0]);
 		c.moveCaller(moves.back());
 		destination = lFour[destination][1];
-		cout << destination << '.'; cout.flush();
+cout << destination << '.'; cout.flush();
 	}
-	moves.push_back(33);
-	cout << "//" << endl;
+moves.push_back(33);
+cout << "//" << endl;
 
 	ofstream outfile;
 	outfile.open("solved.txt");
@@ -226,9 +237,9 @@ int main(){
 			case 32:
 				allMoves = "R\'a " + allMoves;
 				break;
-			case 33:
+case 33:
 				allMoves = "// " + allMoves;
-				break;
+break;
 		}
 		moves.pop_back();
 	}

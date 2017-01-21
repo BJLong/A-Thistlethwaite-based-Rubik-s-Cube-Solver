@@ -7,11 +7,11 @@ int main(void) {
 
   cout << "Preparing lookup tables." << endl;
   cout << "Phase 1" << endl;
-//  generateListOne();
+ generateListOne();
   cout << "Phase 2" << endl;
-//  generateListTwo();
+ generateListTwo();
   cout << "Phase 3" << endl;
-//  generateListThree();
+ generateListThree();
   cout << "Phase 4" << endl;
   generateListFour();
   cout << "Done." << endl;

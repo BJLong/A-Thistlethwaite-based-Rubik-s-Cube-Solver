@@ -638,11 +638,11 @@ void generateListOne(){
 				cubes.push(current);
 				list[encoding][1] = prevEncoding;
 				list[encoding][0] = current.oppositeOf(i);
-				count++;
-				if (count % 1000 == 0) {
-				  cout << '\r' << count;
-				  cout.flush();
-				}
+count++;
+if (count % 1000 == 0) {
+  cout << '\r' << count;
+  cout.flush();
+}
 			}
 			current.moveCaller(current.oppositeOf(i));
 		}
@@ -650,17 +650,24 @@ void generateListOne(){
 	int pin = open("Phase1.txt",O_WRONLY|O_CREAT,0666);
 	write(pin, list,2048*2*sizeof(int));
 	close(pin);
+// 	FILE * pFILE;
+// 	pFILE = fopen("Phase1.txt", "w");
+// 	fwrite(list, sizeof(int), sizeof(list),pFILE);
+// 	fclose(pFILE);
 }
 
 int choose(int n,int k){
-	if (k>n) return 0;
-	int ans=1;
-	if (k > n-k) k = n-k;
-	for (int j=0;j<k;j++) {
-		ans *= n - j;
-		ans /= 1 + j;
-	}
-	return ans;
+/*	if(k == 0){ return 1;}
+	if(n == 0){ return 0;}
+	return ((n * choose(n - 1, k - 1)) / k);*/
+if (k>n) return 0;
+int ans=1;
+if (k > n-k) k = n-k;
+for (int j=0;j<k;j++) {
+ans *= n - j;
+ans /= 1 + j;
+}
+return ans;
 }
 
 int cube::phaseTwoEncode(){
@@ -727,32 +734,32 @@ void generateListTwo(){
     listTwo[69][1] = -1;
 	int prevEncoding = 0;
 	int encoding = 0;
-	int count=0,count2=0;
+int count=0,count2=0;
 	queue <cube> cubes;
 	cubes.push(c); //the root cube
-	cout << c.phaseTwoEncode() << endl;
+cout << c.phaseTwoEncode() << endl;
 	while(!cubes.empty()){
-		count2++;
+count2++;
 		current = cubes.front();
 		cubes.pop();
-		if (count2 % 1000 == 0) {
-		  cout << '\r' << count << "     " << count2;
-		  cout.flush();
-		}
+if (count2 % 1000 == 0) {
+  cout << '\r' << count << "     " << count2;
+  cout.flush();
+}
 		for(int i = 0; i < 33; i++){
-			//cout << current.phaseTwoEncode() << ' ';
+//cout << current.phaseTwoEncode() << ' ';
 			if(i != 2 && i != 4 &&i != 8 && i != 10 && i != 20 && i != 22 && i != 29 && i != 32){
 				prevEncoding = current.phaseTwoEncode();
 				current.moveCaller(i);
 				encoding = current.phaseTwoEncode();
-				if (encoding == 146091)
-				  cout << "\n***" << prevEncoding << "   " << encoding << endl;
+if (encoding == 146091)
+  cout << "\n***" << prevEncoding << "   " << encoding << endl;
 				if(listTwo[encoding][0] == 33){
-					count++;
-					if (encoding == 146091)
-					  cout << "Yes" << listTwo[145101][1] << endl;
-					if (encoding == 145101)
-					  cout << "encoding 145101 has prev " << prevEncoding << endl;
+count++;
+if (encoding == 146091)
+  cout << "Yes" << listTwo[145101][1] << endl;
+if (encoding == 145101)
+  cout << "encoding 145101 has prev " << prevEncoding << endl;
 					cubes.push(current);
 					listTwo[encoding][1] = prevEncoding;
 					listTwo[encoding][0] = current.oppositeOf(i);
